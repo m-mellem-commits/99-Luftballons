@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>99 Luftballons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Permanent+Marker&display=swap" rel="stylesheet">
+<style>
+/* Layout: teen magazine. Red balloon cover, then spreads (bands) that switch between paper, black and yellow. Part dividers: Tipps → Deutschland → Lernen. Single light theme on purpose: a printed magazine has one look. */
+:root{
+  --red:#ff2d3b;
+  --ink:#111111;
+  --paper:#f4f4f2;
+  --yellow:#ffe14a;
+  --blue:#2346ff;
+  --display:"Anton","Impact","Arial Narrow Bold",sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --marker:"Permanent Marker","Comic Sans MS",cursive;
+  /* band tokens (overridden per band) */
+  --bg:var(--paper); --fg:var(--ink); --card:#ffffff; --muted:#55555a; --line:#dcdcd8; --hl:#fff3a6;
+  --der:#2346ff; --die:#e0122a; --das:#0c8f4f; --rot:#e0122a; --sign:#111;
+  color-scheme:light;
+}
+.band-dark{--bg:#111111; --fg:#f5f5f3; --card:#1d1d1f; --muted:#a8a8ad; --line:#333336; --hl:#4b4214; --der:#7f95ff; --die:#ff6170; --das:#3fd08a; --rot:#ff5562; --sign:var(--yellow); color-scheme:dark}
+.band-yellow{--bg:var(--yellow); --fg:#111; --card:#ffffff; --muted:#4a4535; --line:#e5cf4a; --hl:#fff6c4}
+.band-red{--bg:var(--red); --fg:#fff; --card:#ffffff; --muted:#ffe0e2; --line:#ff6a74}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+a{color:inherit;text-decoration-color:var(--red);text-decoration-thickness:2px;text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+h1,h2,h3,h4{line-height:1.05;text-wrap:balance;margin:0}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(2.8rem,8vw,5.6rem);text-transform:uppercase;letter-spacing:.005em;line-height:.95}
+h3{font-family:var(--body);font-weight:800;font-size:1.45rem;margin-bottom:.4rem;letter-spacing:-.01em}
+h4{font-family:var(--body);font-weight:800;font-size:1.12rem;margin-bottom:.3rem}
+p{margin:.4rem 0 .8rem;max-width:68ch}
+.muted{color:var(--muted)}
+.small{font-size:.92rem}
+
+/* ---------- COVER ---------- */
+.cover{position:relative;background:var(--red);color:#fff;overflow:hidden}
+#balloons{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cover .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.35fr 1fr;gap:10px 30px;padding-top:14px;padding-bottom:16px;align-items:end}
+.masthead{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:.85rem;letter-spacing:.14em;text-transform:uppercase;border-bottom:3px solid #fff;padding-bottom:8px;grid-column:1/-1}
+.title99{font-family:var(--display);font-weight:400;line-height:.85;margin:6px 0 0;text-transform:uppercase;display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.title99 .n{display:block;font-size:clamp(4.6rem,11vw,8rem);color:var(--yellow);letter-spacing:-.02em;-webkit-text-stroke:3px var(--ink);paint-order:stroke fill}
+.title99 .w{display:block;font-size:clamp(2.4rem,6vw,4.6rem);padding-bottom:4px;color:var(--ink);letter-spacing:.005em}
+.sticker{display:inline-block;font-family:var(--marker);background:var(--yellow);color:var(--ink);padding:8px 16px 6px;transform:rotate(-3deg);font-size:clamp(1.05rem,2.2vw,1.4rem);box-shadow:3px 3px 0 var(--ink);margin-top:10px}
+.coverlines{list-style:none;margin:0;padding:0;display:grid;gap:7px;align-content:end}
+.coverlines a{display:block;text-decoration:none;color:#fff}
+.coverlines .cl-k{font-family:var(--display);font-size:1.3rem;line-height:1;color:var(--yellow);text-transform:uppercase;text-shadow:2px 2px 0 var(--ink)}
+.coverlines .cl-t{font-weight:600;font-size:.88rem;line-height:1.25;max-width:40ch}
+.coverlines a:hover .cl-k{color:#fff}
+.coverfoot{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-top:4px}
+.barcode{background:#fff;padding:8px 10px 4px;color:var(--ink);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-align:center}
+.barcode{padding:4px 8px 2px!important}.barcode i{display:block;height:18px;width:110px;background:repeating-linear-gradient(90deg,#111 0 2px,transparent 2px 4px,#111 4px 5px,transparent 5px 8px,#111 8px 11px,transparent 11px 12px)}
+.issue{font-weight:800;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase}
+@media (max-width:820px){.cover .wrap{grid-template-columns:1fr}.coverlines .cl-t{display:none}.coverlines{grid-template-columns:1fr 1fr;gap:4px 14px}}
+
+/* ---------- NAV ---------- */
+nav.top{position:sticky;top:0;z-index:20;background:var(--ink)}
+nav.top .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-top:7px;padding-bottom:7px;align-items:center}
+nav.top .logo{font-family:var(--display);color:var(--red);font-size:1.35rem;margin-right:12px;text-decoration:none;flex:none}
+nav.top a.l{flex:none;font-weight:700;font-size:.95rem;text-decoration:none;color:#fff;padding:5px 11px;border-radius:999px}
+nav.top a.l:hover{background:#2a2a2a}
+nav.top a.l.on{background:var(--yellow);color:var(--ink)}
+nav.top .sep{flex:none;width:1px;height:18px;background:#444;margin:0 6px}
+
+/* ---------- PART DIVIDERS ---------- */
+.part{background:var(--ink);color:#fff;padding:34px 0;border-top:6px solid var(--red)}
+.part .wrap{display:flex;align-items:baseline;gap:20px;flex-wrap:wrap}
+.part .pn{font-family:var(--display);font-size:clamp(3rem,9vw,6rem);color:var(--red);line-height:.9}
+.part .pt{font-family:var(--display);font-size:clamp(2rem,5vw,3.4rem);text-transform:uppercase;line-height:1}
+.part .pd{font-family:var(--marker);color:var(--yellow);font-size:1.3rem;transform:rotate(-2deg)}
+
+/* ---------- SECTIONS / BANDS ---------- */
+section.sec{background:var(--bg);color:var(--fg);padding:60px 0 44px}
+.sechead{margin-bottom:26px;display:grid;gap:8px}
+.kicker-st{justify-self:start;font-family:var(--marker);font-size:1.05rem;background:var(--fg);color:var(--bg);padding:4px 12px 2px;transform:rotate(-2deg);letter-spacing:.02em}
+.band-yellow .kicker-st{background:var(--ink);color:var(--yellow)}
+.band-dark .kicker-st{background:var(--yellow);color:var(--ink)}
+.lede{font-size:1.15rem;color:var(--muted);margin-top:6px;max-width:62ch}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.card{background:var(--card);color:var(--fg);border:2px solid var(--fg);border-radius:4px;padding:18px 20px;box-shadow:5px 5px 0 var(--fg)}
+.band-dark .card{border-color:#3a3a3e;box-shadow:none}
+.band-yellow .card{color:var(--ink)}
+.card.key{border-top:8px solid var(--red)}
+.card > *:last-child{margin-bottom:0}
+.tag{display:inline-block;font-weight:800;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;background:var(--ink);color:#fff;margin-right:4px}
+.band-dark .tag{background:var(--yellow);color:var(--ink)}
+.ex{background:var(--bg);border-left:4px solid var(--red);padding:8px 12px;margin:.5rem 0;font-size:.98rem}
+.band-yellow .ex{background:#fff8d1}
+.band-dark .ex{background:#151517}
+.ex .no{color:var(--muted);font-style:italic;display:block;font-size:.92rem}
+mark{background:var(--hl);color:inherit;padding:0 2px}
+.der{color:var(--der);font-weight:800}.die{color:var(--die);font-weight:800}.das{color:var(--das);font-weight:800}
+ul.tight{margin:.3rem 0 .8rem;padding-left:1.2rem}
+ul.tight li{margin:.15rem 0}
+
+/* TABLES */
+.tbl{overflow-x:auto;margin:.5rem 0 .8rem}
+table{border-collapse:collapse;width:100%;font-size:.97rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-weight:800;font-size:.95rem;border-bottom:3px solid var(--fg)}
+tbody th{font-weight:700;color:var(--muted)}
+td.hl{background:var(--hl)}
+
+/* LISTS: playlist + chart */
+.list{display:grid}
+.item{display:grid;grid-template-columns:1fr auto;gap:2px 14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.item:last-child{border-bottom:0}
+.item .t{font-weight:800;font-size:1.08rem}
+.item .meta{font-size:.82rem;color:var(--muted);text-align:right;white-space:nowrap;font-weight:600}
+.item .d{grid-column:1/-1;font-size:.96rem;color:var(--muted);margin:0}
+.chart,.playlist{counter-reset:n}
+.chart .item,.playlist .item{grid-template-columns:auto 1fr auto;counter-increment:n}
+.chart .item::before{content:counter(n);font-family:var(--display);font-size:2.6rem;line-height:.9;color:var(--red);grid-row:1/3;min-width:52px}
+.chart .item .d,.playlist .item .d{grid-column:2/-1}
+.playlist .item::before{content:counter(n,decimal-leading-zero);font-weight:800;font-variant-numeric:tabular-nums;color:var(--yellow);grid-row:1/3;padding-top:3px;min-width:30px}
+.lvl{display:inline-block;font-weight:800;font-size:.72rem;letter-spacing:.06em;padding:1px 6px;color:#fff;margin-left:8px;vertical-align:2px}
+.lvl.a{background:#0c8f4f}.lvl.b{background:var(--ink)}.lvl.c{background:var(--red)}
+
+/* RULE CARDS */
+.rule .big{font-family:var(--display);font-size:2.6rem;line-height:1;color:var(--red);margin-bottom:6px;text-transform:uppercase}
+
+/* VERB TOOL */
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0 14px}
+.tools input[type=search]{font:inherit;padding:9px 12px;border:2px solid var(--fg);border-radius:4px;background:var(--card);color:var(--fg);min-width:220px;flex:1 1 220px}
+.seg{display:inline-flex;border:2px solid var(--fg);border-radius:4px;overflow:hidden;background:var(--card)}
+.seg button{font:inherit;font-weight:600;font-size:.95rem;border:0;background:transparent;color:var(--fg);padding:7px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.btn{font:inherit;font-weight:800;border:2px solid var(--ink);background:var(--card);color:var(--ink);padding:7px 14px;border-radius:4px;cursor:pointer}
+.btn.primary{background:var(--red);border-color:var(--ink);color:#fff;box-shadow:3px 3px 0 var(--ink)}
+.btn.primary:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--ink)}
+#verbs td:first-child{font-weight:800}
+#verbs .vt{font-size:.75rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+#verbs.practice td.hide{color:transparent;background:repeating-linear-gradient(45deg,var(--bg) 0 6px,var(--line) 6px 8px);cursor:pointer}
+#verbs.practice td.hide.shown{color:inherit;background:var(--hl)}
+.sein{color:var(--rot);font-weight:800}
+.count{font-size:.9rem;color:var(--muted);font-weight:600}
+
+/* QUIZ */
+.quiz{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.qword{font-family:var(--display);font-size:clamp(2.4rem,6vw,3.6rem);text-transform:none;line-height:1.1}
+.qbtns{display:flex;gap:8px;flex-wrap:wrap}
+.qbtns button{font-family:var(--display);font-size:1.6rem;padding:6px 22px;border-radius:4px;border:3px solid currentColor;background:#fff;cursor:pointer}
+.qbtns .b-der{color:var(--der)}.qbtns .b-die{color:var(--die)}.qbtns .b-das{color:var(--das)}
+.qbtns button:hover{background:var(--hl)}
+#qfb{min-height:1.6em;font-weight:600}
+@media (max-width:640px){.quiz{grid-template-columns:1fr}}
+
+/* MAP */
+.mapwrap{display:grid;grid-template-columns:minmax(0,440px) 1fr;gap:24px;align-items:start}
+@media (max-width:820px){.mapwrap{grid-template-columns:1fr}}
+.mapbox{background:var(--card);border:2px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:10px}
+svg#map{width:100%;height:auto;display:block}
+#map path.st{fill:#f1f1ee;stroke:#111;stroke-width:.8;cursor:pointer;transition:fill .15s}
+#map path.st:hover{fill:#ffd2d5}
+#map path.st.sel{fill:var(--red);stroke:#111;stroke-width:1.5}
+#map .abbr{font-family:var(--body);font-weight:800;font-size:11px;fill:#77777c;pointer-events:none;text-anchor:middle}
+#map .city circle{fill:var(--red);stroke:#fff;stroke-width:1.5}
+#map .city circle.cap{fill:#111}
+#map .city text{font-family:var(--body);font-weight:700;font-size:11px;fill:#111;pointer-events:none;paint-order:stroke;stroke:#fff;stroke-width:3px}
+#map .sea{font-family:var(--marker);font-size:14px;fill:var(--blue)}
+.stinfo h3{font-family:var(--display);font-weight:400;font-size:2.8rem;text-transform:uppercase}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:12px 0}
+.fact{background:var(--card);border:2px solid var(--fg);padding:8px 12px}
+.stinfo .fact{background:var(--paper);border:0}
+.fact .k{font-size:.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.fact .v{font-family:var(--display);font-size:1.6rem;line-height:1.15}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chips button{font:inherit;font-weight:600;font-size:.85rem;border:2px solid var(--ink);background:#fff;color:var(--ink);border-radius:999px;padding:2px 10px;cursor:pointer}
+.chips button.on{background:var(--red);color:#fff}
+
+/* TIMELINE */
+.tl{display:grid;border-left:4px solid var(--fg);margin-left:6px}
+.tl div{padding:6px 0 12px 20px;position:relative}
+.tl div::before{content:"";position:absolute;left:-11px;top:12px;width:18px;height:18px;border-radius:50%;background:var(--red);border:3px solid var(--fg)}
+.tl b{font-family:var(--display);font-weight:400;font-size:1.5rem;margin-right:8px}
+
+.word{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.word:last-child{border-bottom:0}
+.word .w{font-family:var(--display);font-size:1.3rem;font-weight:400}
+footer{background:var(--red);color:#fff;padding:40px 0 60px;font-size:.92rem}
+footer a{color:#fff}
+</style>
+</head>
+<body>
+
+<header class="cover" id="top">
+  <canvas id="balloons" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="masthead"><span>Das Magazin für Deutsch in der Oberstufe</span><span>Ausgabe Nr. 1</span></div>
+    <div>
+      <h1 class="title99"><span class="n">99</span><span class="w">Luftballons</span></h1>
+      <div class="sticker">Oleas Deutsch-Universum</div>
+    </div>
+    <ul class="coverlines" aria-label="I dette nummeret">
+      <li><a href="#musikk"><div class="cl-k">Playlist</div><div class="cl-t">Fra Nena til Nina Chuba: tysk musikk du faktisk vil høre på</div></a></li>
+      <li><a href="#se"><div class="cl-k">Binge-Liste</div><div class="cl-t">DRUCK er SKAM på tysk, pluss 18 andre serier og filmer</div></a></li>
+      <li><a href="#kart"><div class="cl-k">16 Länder im Check</div><div class="cl-t">Trykk deg gjennom kartet: hvem har Oktoberfest, og hvor går ferja til Oslo?</div></a></li>
+      <li><a href="#ord"><div class="cl-k">Ragebait &amp; Co.</div><div class="cl-t">Slang, falske venner og årets ungdomsord</div></a></li>
+      <li><a href="#grammatikk"><div class="cl-k">Nie wieder Dativ-Panik</div><div class="cl-t">All grammatikken, 100 verb og huskeregler som virker</div></a></li>
+    </ul>
+    <div class="coverfoot">
+      <span class="issue">November 2026 · Gratis · Für Olea</span>
+      <div class="barcode"><i></i>4 099 1983 0099</div>
+    </div>
+  </div>
+</header>
+
+<nav class="top" aria-label="Seksjoner">
+  <div class="wrap">
+    <a class="logo" href="#top">99</a>
+    <a class="l" href="#musikk">Musikk</a><a class="l" href="#se">Serier og film</a><a class="l" href="#lese">Les</a>
+    <span class="sep"></span>
+    <a class="l" href="#kart">Kart</a><a class="l" href="#byer">Byer</a><a class="l" href="#kultur">Kultur</a><a class="l" href="#ord">Ord og slang</a>
+    <span class="sep"></span>
+    <a class="l" href="#grammatikk">Grammatikk</a><a class="l" href="#verb">Verb</a><a class="l" href="#huskeregler">Huskeregler</a>
+  </div>
+</nav>
+<main><div class="part"><div class="wrap"><span class="pn">01</span><span class="pt">Tipps</span><span class="pd">Hören, schauen, lesen</span></div></div><section class="sec band-dark" id="musikk">
+  <div class="wrap"><div class="sechead"><span class="kicker-st">PLAYLIST</span><h2>Musik</h2><p class="lede">Lag en tysk spilleliste og les teksten mens du hører (søk på sangtittel + «Lyrics»). Sanger setter seg i hodet; det gjør grammatikken også.</p></div>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Nå: pop og rap</h3>
+      <div class="list playlist">
+        <div class="item"><div class="t">Nina Chuba</div><div class="meta">Pop/rap</div><p class="d">Prøv «Wildberry Lillet» og «Fata Morgana».</p></div>
+        <div class="item"><div class="t">Apache 207</div><div class="meta">Rap/pop</div><p class="d">«Roller» var en gigantisk hit i 2020.</p></div>
+        <div class="item"><div class="t">Ayliva</div><div class="meta">Pop/R&amp;B</div><p class="d">En av de største nye stjernene i tysk pop.</p></div>
+        <div class="item"><div class="t">Peter Fox</div><div class="meta">Pop/reggae</div><p class="d">«Haus am See» og «Zukunft Pink». Tydelig uttale.</p></div>
+        <div class="item"><div class="t">AnnenMayKantereit</div><div class="meta">Indie</div><p class="d">Raspete stemme, enkle tekster. Prøv «Pocahontas».</p></div>
+        <div class="item"><div class="t">Provinz</div><div class="meta">Indiepop</div><p class="d">Følsomme ungdomstekster.</p></div>
+        <div class="item"><div class="t">Cro</div><div class="meta">Rap</div><p class="d">Rapperen med pandamaske. «Easy» er lett å synge med på.</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Klassikere alle tyskere kan</h3>
+      <div class="list playlist">
+        <div class="item"><div class="t">Nena – «99 Luftballons»</div><div class="meta">1983</div><p class="d">Sangen dette magasinet er oppkalt etter. 99 ballonger blir til en atomkrig-misforståelse: kald krig i popformat, og verdenshit.</p></div>
+        <div class="item"><div class="t">Die Toten Hosen – «Tage wie diese»</div><div class="meta">2012</div><p class="d">Synges på stadion og fester.</p></div>
+        <div class="item"><div class="t">Die Ärzte – «Junge»</div><div class="meta">2007</div><p class="d">Morsom sang om foreldre som maser.</p></div>
+        <div class="item"><div class="t">Wir sind Helden – «Nur ein Wort»</div><div class="meta">2005</div><p class="d">Ordspill-pop. Tydelig og lett å lese med.</p></div>
+        <div class="item"><div class="t">Juli – «Perfekte Welle»</div><div class="meta">2004</div><p class="d">Sommerlig indiepop, mye brukt i tysktimer.</p></div>
+        <div class="item"><div class="t">Helene Fischer – «Atemlos durch die Nacht»</div><div class="meta">2013</div><p class="d">Schlager. Spill den på en tysk fest og se hva som skjer.</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Tysk musikk som forandret verden</h3>
+      <div class="list playlist">
+        <div class="item"><div class="t">Kraftwerk</div><div class="meta">Elektronisk</div><p class="d">Fra Düsseldorf. Regnes som en av grunnleggerne av elektronisk pop og techno. Prøv «Autobahn».</p></div>
+        <div class="item"><div class="t">Rammstein</div><div class="meta">Metal</div><p class="d">Tysklands største musikkeksport. Tung og hard, med rullende r.</p></div>
+        <div class="item"><div class="t">Beethoven, Bach, Brahms</div><div class="meta">Klassisk</div><p class="d">«Ode an die Freude» fra Beethovens 9. symfoni er EUs hymne.</p></div>
+        <div class="item"><div class="t">Berlin-techno</div><div class="meta">Klubb</div><p class="d">Berlins technokultur står på Tysklands liste over immateriell kulturarv.</p></div>
+      </div>
+      <p class="small muted" style="margin-top:10px">Tips: Appen/nettsiden <b>LyricsTraining</b> lar deg fylle inn manglende ord mens sangen spilles.</p>
+    </div>
+  </div>
+</div></section><section class="sec " id="se">
+  <div class="wrap"><div class="sechead"><span class="kicker-st">BINGE-LISTE</span><h2>Serien &amp; Filme</h2><p class="lede">Det beste triks: se med <b>tysk tale og tyske undertekster</b>. Begynn med norske eller engelske undertekster om det blir for tungt. Hvor serien strømmes kan endre seg; sjekk tjenesten du har.</p></div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Serier</h3>
+      <div class="list chart">
+        <div class="item"><div class="t">DRUCK</div><div class="meta">funk/ZDF · 2018–</div><p class="d">Tysk versjon av <b>SKAM</b>! Du kjenner historien, så du forstår mer enn du tror. Ligger gratis på YouTube og i ZDF-mediateket.</p></div>
+        <div class="item"><div class="t">Dark</div><div class="meta">Netflix · 2017–2020</div><p class="d">Tidsreise-mysterium i småbyen Winden. Verdenskjent, men krevende: ta notater over hvem som er hvem.</p></div>
+        <div class="item"><div class="t">How to Sell Drugs Online (Fast)</div><div class="meta">Netflix · 2019–</div><p class="d">Nerdete tenåring starter nettbutikk fra gutterommet. Rask og morsom, mye ungdomsslang.</p></div>
+        <div class="item"><div class="t">Maxton Hall – Die Welt zwischen uns</div><div class="meta">Prime Video · 2024–</div><p class="d">Romantisk drama på britisk eliteskole, men innspilt på tysk.</p></div>
+        <div class="item"><div class="t">Wir sind die Welle</div><div class="meta">Netflix · 2019</div><p class="d">Ungdommer starter en bevegelse som kommer ut av kontroll. Bygger løst på <i>Die Welle</i>.</p></div>
+        <div class="item"><div class="t">Türkisch für Anfänger</div><div class="meta">ARD · 2006–2008</div><p class="d">Kultkomedie om en tysk-tyrkisk lappeteppefamilie. Fin hverdagstysk.</p></div>
+        <div class="item"><div class="t">Babylon Berlin</div><div class="meta">ARD/Sky · 2017–</div><p class="d">Krim i 1920-tallets Berlin. Fantastiske kostymer og musikk.</p></div>
+        <div class="item"><div class="t">Die Kaiserin</div><div class="meta">Netflix · 2022–</div><p class="d">Den unge keiserinne Sisi av Østerrike, i moderne stil.</p></div>
+        <div class="item"><div class="t">Deutschland 83</div><div class="meta">2015</div><p class="d">Ung østtysk soldat sendes som spion til Vest-Tyskland. Kald krig og 80-tallsmusikk.</p></div>
+        <div class="item"><div class="t">Unfamiliar</div><div class="meta">Netflix · 2026</div><p class="d">Agentthriller fra Berlin. En av de største tyske Netflix-suksessene i 2026.</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Filmer</h3>
+      <div class="list chart">
+        <div class="item"><div class="t">Tschick</div><div class="meta">2016 · Fatih Akin</div><p class="d">Road movie om to 14-åringer i en stjålet Lada. Les boka først, eller etterpå.</p></div>
+        <div class="item"><div class="t">Die Welle</div><div class="meta">2008</div><p class="d">En lærer viser klassen hvor lett det er å skape et diktatur. Klassiker i tyskundervisning.</p></div>
+        <div class="item"><div class="t">Good Bye, Lenin!</div><div class="meta">2003</div><p class="d">Gutt skjuler for moren at Muren har falt. Morsom og trist på samme tid.</p></div>
+        <div class="item"><div class="t">Fack ju Göhte</div><div class="meta">2013</div><p class="d">Bankraner blir vikarlærer. Grov skolekomedie og en av Tysklands største kinosuksesser.</p></div>
+        <div class="item"><div class="t">Lola rennt</div><div class="meta">1998</div><p class="d">Lola har 20 minutter på å skaffe 100 000 mark. Tekno, tempo og tre forsøk.</p></div>
+        <div class="item"><div class="t">Das Leben der Anderen</div><div class="meta">2006 · Oscar</div><p class="d">Stasi-agent overvåker en forfatter i Øst-Berlin. Sterk og stillferdig.</p></div>
+        <div class="item"><div class="t">Im Westen nichts Neues</div><div class="meta">2022 · 4 Oscar</div><p class="d">Første verdenskrig. Brutal, men viktig. For de eldste.</p></div>
+        <div class="item"><div class="t">Das Lehrerzimmer</div><div class="meta">2023 · Oscar-nominert</div><p class="d">En ung lærer prøver å oppklare tyverier på skolen, og alt eskalerer. Spennende som en thriller.</p></div>
+        <div class="item"><div class="t">Sonnenallee</div><div class="meta">1999</div><p class="d">Ungdomsliv i Øst-Berlin på 70-tallet, rett ved Muren. Komedie med mye musikk.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section><section class="sec band-yellow" id="lese">
+  <div class="wrap"><div class="sechead"><span class="kicker-st">LESELISTE</span><h2>Lesen</h2><p class="lede">Bøker som passer for norske tenåringer, sortert etter nivå. Start lettere enn du tror; det er bedre å lese mye enn å slite med lite.</p></div>
+  <div class="small muted" style="margin-bottom:10px"><span class="lvl a">LETT</span> passer fra 1. år · <span class="lvl b">MIDDELS</span> passer 2.–3. år · <span class="lvl c">KREVENDE</span> for deg som vil strekke deg</div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Start her</h3>
+      <div class="list">
+        <div class="item"><div class="t">Lustiges Taschenbuch<span class="lvl a">LETT</span></div><div class="meta">Tegneserie</div><p class="d">Den tyske Donald-pocketen. Du kjenner figurene og handlingen, så du kan bruke kreftene på språket.</p></div>
+        <div class="item"><div class="t">Asterix på tysk<span class="lvl a">LETT</span></div><div class="meta">Tegneserie</div><p class="d">Bildene hjelper deg med å forstå. Finnes på mange bibliotek.</p></div>
+        <div class="item"><div class="t">Lettleste skolebøker (Leichte Lektüre)<span class="lvl a">LETT</span></div><div class="meta">Tilrettelagt</div><p class="d">Forlag som Klett, Hueber og Cornelsen har korte bøker med ordforklaringer. Spør læreren eller skolebiblioteket hva de har.</p></div>
+        <div class="item"><div class="t">Emil und die Detektive<span class="lvl a">LETT</span></div><div class="meta">Erich Kästner · 1929</div><p class="d">Klassisk detektivhistorie med barnegjeng i Berlin. Ofte utgitt i forenklet versjon.</p></div>
+        <div class="item"><div class="t">Das doppelte Lottchen<span class="lvl a">LETT</span></div><div class="meta">Erich Kästner · 1949</div><p class="d">To jenter oppdager at de er tvillinger. Kjent fra mange filmer.</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Ungdomsbøker</h3>
+      <div class="list">
+        <div class="item"><div class="t">Rico, Oskar und die Tieferschatten<span class="lvl b">MIDDELS</span></div><div class="meta">Andreas Steinhöfel · 2008</div><p class="d">Morsom og varm krim fra Berlin, fortalt av en gutt som tenker litt annerledes.</p></div>
+        <div class="item"><div class="t">Tintenherz<span class="lvl b">MIDDELS</span></div><div class="meta">Cornelia Funke · 2003</div><p class="d">Fantasy om en far som kan lese figurer ut av bøker. Lang, men spennende.</p></div>
+        <div class="item"><div class="t">Momo<span class="lvl b">MIDDELS</span></div><div class="meta">Michael Ende · 1973</div><p class="d">Eventyr om de grå herrene som stjeler tid. Passer godt til diskusjon om stress og mobilbruk.</p></div>
+        <div class="item"><div class="t">Krabat<span class="lvl b">MIDDELS</span></div><div class="meta">Otfried Preußler · 1971</div><p class="d">Mørk trolldomshistorie fra en mølle. Også film fra 2008.</p></div>
+        <div class="item"><div class="t">Damals war es Friedrich<span class="lvl b">MIDDELS</span></div><div class="meta">Hans Peter Richter · 1961</div><p class="d">To gutter i samme hus i Nazi-Tyskland, den ene jødisk. Mye brukt i tyske skoler.</p></div>
+        <div class="item"><div class="t">Save Me<span class="lvl b">MIDDELS</span></div><div class="meta">Mona Kasten · 2018</div><p class="d">Romantikk på eliteskole. Boka bak serien <i>Maxton Hall</i>.</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>For deg som vil videre</h3>
+      <div class="list">
+        <div class="item"><div class="t">Tschick<span class="lvl c">KREVENDE</span></div><div class="meta">Wolfgang Herrndorf · 2010</div><p class="d">To 14-åringer stjeler en Lada og kjører ut i sommer-Tyskland. Morsom, rå og rørende, og pensum i mange tyske skoler. Se filmen etterpå!</p></div>
+        <div class="item"><div class="t">Die Verwandlung<span class="lvl c">KREVENDE</span></div><div class="meta">Franz Kafka · 1915</div><p class="d">Gregor våkner opp som et insekt. Kort, rar og en klassiker du får bruk for.</p></div>
+        <div class="item"><div class="t">Er ist wieder da<span class="lvl c">KREVENDE</span></div><div class="meta">Timur Vermes · 2012</div><p class="d">Satire: Hitler våkner i dagens Berlin og blir YouTube-stjerne. Fin inngang til samtale om media og historie.</p></div>
+        <div class="item"><div class="t">Die unendliche Geschichte<span class="lvl c">KREVENDE</span></div><div class="meta">Michael Ende · 1979</div><p class="d">«Den uendelige historien». Stor fantasy-klassiker.</p></div>
+        <div class="item"><div class="t">Im Westen nichts Neues<span class="lvl c">KREVENDE</span></div><div class="meta">Erich Maria Remarque · 1929</div><p class="d">Første verdenskrig sett fra en ung soldat. Les gjerne etter at du har sett filmen fra 2022.</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Lett tysk på nett (gratis)</h3>
+      <div class="list">
+        <div class="item"><div class="t"><a href="https://www.nachrichtenleicht.de">nachrichtenleicht.de</a></div><div class="meta">Deutschlandfunk</div><p class="d">Nyheter på lett tysk, med ordliste.</p></div>
+        <div class="item"><div class="t"><a href="https://learngerman.dw.com">Deutsche Welle: Learn German</a></div><div class="meta">DW</div><p class="d">Kurset «Nicos Weg» (video, A1–B1) og nyheter med langsom opplesning.</p></div>
+        <div class="item"><div class="t"><a href="https://www.zdf.de/kinder/logo">logo!</a></div><div class="meta">ZDF</div><p class="d">Nyheter for barn og unge. Korte innslag, tydelig språk.</p></div>
+        <div class="item"><div class="t">Easy German</div><div class="meta">YouTube</div><p class="d">Gateintervjuer med tyske og engelske undertekster samtidig. Perfekt for å høre ekte, hverdagslig tysk.</p></div>
+        <div class="item"><div class="t">Tagesschau in 100 Sekunden</div><div class="meta">ARD</div><p class="d">Dagens nyheter på under to minutter. Bra lytteøvelse når du er litt stødigere.</p></div>
+      </div>
+    </div>
+  </div>
+</div></section><div class="part"><div class="wrap"><span class="pn">02</span><span class="pt">Deutschland</span><span class="pd">Land, Leute, Länder</span></div></div><section class="sec " id="kart">
+  <div class="wrap"><div class="sechead"><span class="kicker-st">LÄNDERCHECK</span><h2>Deutschland &amp; die Bundesländer</h2><p class="lede">Tyskland er en forbundsstat med 16 delstater, Bundesländer. Hver har egen regjering, egne skoleregler og egne ferier. Trykk på en delstat.</p></div>
+
+  <div class="facts" style="margin-bottom:20px">
+    <div class="fact"><div class="k">Hovedstad</div><div class="v">Berlin</div></div>
+    <div class="fact"><div class="k">Innbyggere</div><div class="v">ca. 84 mill.</div></div>
+    <div class="fact"><div class="k">Areal</div><div class="v">357 600 km²</div></div>
+    <div class="fact"><div class="k">Naboland</div><div class="v">9</div></div>
+    <div class="fact"><div class="k">Forbundskansler</div><div class="v">Friedrich Merz</div></div>
+    <div class="fact"><div class="k">Høyeste fjell</div><div class="v">Zugspitze 2962 m</div></div>
+  </div>
+
+  <div class="mapwrap">
+    <div class="mapbox">
+      <svg id="map" viewBox="0 0 440 600" role="group" aria-label="Kart over Tyskland med 16 delstater"></svg>
+      <p class="small muted" style="margin:6px 4px 0">● svart = hovedstad · ● rød = storby</p>
+    </div>
+    <div class="stinfo card" id="stinfo" aria-live="polite"></div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h4>Tyskland og Norge</h4>
+    <p class="small">Tyskland er litt <b>mindre enn Norge</b> i areal, men har rundt <b>15 ganger så mange innbyggere</b>. Tyskland er et av Norges aller viktigste handelsland, og Color Line-ferja går hver dag mellom <b>Oslo og Kiel</b>. Tyskland grenser til Danmark, Polen, Tsjekkia, Østerrike, Sveits, Frankrike, Luxembourg, Belgia og Nederland. Tysk er også offisielt språk i <b>Østerrike, Sveits, Liechtenstein, Luxembourg og Belgia</b>, og i Sør-Tirol i Italia.</p>
+  </div>
+</div></section><section class="sec band-yellow" id="byer">
+  <div class="wrap"><div class="sechead"><span class="kicker-st">STÄDTETRIP</span><h2>Die großen Städte</h2><p class="lede">Innbyggertallene er avrundet.</p></div>
+  <div class="grid g3">
+    <div class="card"><h3>Berlin</h3><p class="small muted">Hovedstad · ca. 3,8 mill.</p><p class="small">Delt av Muren 1961–1989. Se Brandenburger Tor, restene av Muren ved East Side Gallery, Reichstag med glasskuppelen og Museumsinsel. Spis døner og currywurst.</p><p class="small"><b>For deg:</b> leie sykkel langs Mauerweg, Tempelhofer Feld (en gammel flyplass som nå er park), loppemarked i Mauerpark på søndager.</p></div>
+    <div class="card"><h3>Hamburg</h3><p class="small muted">Havneby · ca. 1,9 mill.</p><p class="small">Tysklands største havn og en egen delstat. Elbphilharmonie, Speicherstadt og fiskemarkedet tidlig søndag morgen.</p><p class="small"><b>For deg:</b> Miniatur Wunderland, verdens største modelljernbane. Ta fergen på Elben med vanlig busskort.</p></div>
+    <div class="card"><h3>München</h3><p class="small muted">Bayern · ca. 1,5 mill.</p><p class="small">Oktoberfest, FC Bayern, Englischer Garten og Alpene rett i nærheten. Byen har en egen dialekt og egen stolthet.</p><p class="small"><b>For deg:</b> se surferne på Eisbach-bølgen midt i byen, og BMW Welt.</p></div>
+    <div class="card"><h3>Köln</h3><p class="small muted">Nordrhein-Westfalen · ca. 1,1 mill.</p><p class="small">Den enorme domkirken Kölner Dom tok over 600 år å bygge ferdig. Byen er kjent for karnevalet i februar og ølet Kölsch.</p><p class="small"><b>For deg:</b> Schokoladenmuseum og gamescom, verdens største spillmesse, hver august.</p></div>
+    <div class="card"><h3>Frankfurt am Main</h3><p class="small muted">Hessen · ca. 770 000</p><p class="small">Finanssentrum med skyskrapere («Mainhattan») og Den europeiske sentralbanken. Tysklands største flyplass.</p><p class="small"><b>For deg:</b> utsikt fra Main Tower og Goethes fødehjem.</p></div>
+    <div class="card"><h3>Leipzig og Dresden</h3><p class="small muted">Sachsen · ca. 620 000 og 570 000</p><p class="small">Leipzig: demonstrasjonene her i 1989 bidro til at Muren falt. Bach jobbet i Thomaskirche. Dresden: Frauenkirche ble gjenreist etter krigen og står igjen i barokkprakt.</p></div>
+  </div>
+</div></section><section class="sec " id="kultur">
+  <div class="wrap"><div class="sechead"><span class="kicker-st">TYPISCH DEUTSCH</span><h2>Typisch deutsch</h2><p class="lede">Ting som er kule, rare eller bare veldig tyske. Gode samtaleemner på muntlig eksamen.</p></div>
+  <div class="grid g3">
+    <div class="card"><h4>Karakterer: 1 er best!</h4><p class="small">I tysk skole går karakterene fra <b>1 (sehr gut)</b> til <b>6 (ungenügend)</b>. Motsatt av Norge. Avgangseksamen heter <i>Abitur</i>, og videregående heter ofte <i>Gymnasium</i>.</p></div>
+    <div class="card"><h4>Schultüte</h4><p class="small">På første skoledag får barn en stor papirkjegle full av godteri og skolesaker. Mange voksne har fortsatt bildet med kjeglen.</p></div>
+    <div class="card"><h4>Pfand</h4><p class="small">Pant på flasker og bokser, akkurat som i Norge. Engangsflasker har <b>25 cent</b> pant, og mange samler flasker fra søppelkasser.</p></div>
+    <div class="card"><h4>Sonntagsruhe</h4><p class="small">På søndager er nesten alle butikker stengt, og det forventes ro: ikke klipp plenen eller bor i veggen.</p></div>
+    <div class="card"><h4>Autobahn</h4><p class="small">På deler av motorveiene er det <b>ingen generell fartsgrense</b>, bare anbefalt 130 km/t. Det diskuteres stadig om det bør endres.</p></div>
+    <div class="card"><h4>Brot</h4><p class="small">Tyskland har over 3000 registrerte brødtyper, og den tyske brødkulturen er oppført som immateriell kulturarv. Prøv <i>Brezel</i> og <i>Brötchen</i>.</p></div>
+    <div class="card"><h4>Mat å prøve</h4><p class="small"><b>Currywurst</b> (Berlin), <b>Döner</b> (tyrkisk-tysk og mer populær enn burger), <b>Spätzle</b> (sør), <b>Schnitzel</b>, <b>Kaffee und Kuchen</b> på søndag ettermiddag, og <b>Gummibärchen</b>: Haribo ble startet i Bonn i 1920.</p></div>
+    <div class="card"><h4>Jul og advent</h4><p class="small">Adventskalender og juletre i stua kommer fra tysk tradisjon. I desember er det <b>Weihnachtsmarkt</b> overalt, med glühwein, kinderpunsch og brente mandler. Gaver åpnes på julaften, som i Norge.</p></div>
+    <div class="card"><h4>Karneval / Fasching</h4><p class="small">I februar kler halve Rhinland seg ut, særlig i Köln, Mainz og Düsseldorf. Karnevalstiden kalles «den femte årstiden».</p></div>
+    <div class="card"><h4>Fußball</h4><p class="small">Bundesliga har noen av de største publikumstallene i verden. Kjente klubber: Bayern München, Borussia Dortmund (den gule veggen), Bayer Leverkusen. Revierderby = Dortmund mot Schalke.</p></div>
+    <div class="card"><h4>Ampelmännchen</h4><p class="small">Den lille mannen med hatt på østtyske gåfelt ble så populær at han ble beholdt etter gjenforeningen. Nå selges han som souvenir.</p></div>
+    <div class="card"><h4>Lange ord</h4><p class="small">Tysk setter sammen ord så lange som du vil: <i>Donaudampfschifffahrtsgesellschaftskapitän</i>. Et lovnavn i Mecklenburg-Vorpommern var på hele 63 bokstaver før loven ble opphevet i 2013.</p></div>
+  </div>
+
+  <h3 style="margin-top:36px">Historie på to minutter</h3>
+  <div class="grid g2">
+    <div class="tl">
+      <div><b>1517</b>Martin Luther starter reformasjonen i Wittenberg. Hans bibeloversettelse former det tyske skriftspråket.</div>
+      <div><b>1871</b>Tyskland blir samlet til ett rike.</div>
+      <div><b>1919</b>Weimarrepublikken, Tysklands første demokrati.</div>
+      <div><b>1933–45</b>Nazistene tar makten. Andre verdenskrig og Holocaust. Tyskland okkuperer Norge 1940–45.</div>
+      <div><b>1949</b>Landet deles i Vest-Tyskland (BRD) og Øst-Tyskland (DDR).</div>
+    </div>
+    <div class="tl">
+      <div><b>1961</b>Berlinmuren bygges.</div>
+      <div><b>9.11.1989</b>Muren faller.</div>
+      <div><b>3.10.1990</b>Gjenforeningen. Tysklands nasjonaldag: Tag der Deutschen Einheit.</div>
+      <div><b>2002</b>Euroen erstatter D-mark.</div>
+      <div><b>2025</b>Friedrich Merz (CDU) blir forbundskansler 6. mai, etter Olaf Scholz.</div>
+    </div>
+  </div>
+</div></section><section class="sec band-dark" id="ord">
+  <div class="wrap"><div class="sechead"><span class="kicker-st">WÖRTERBUCH</span><h2>Wörter</h2><p class="lede">Ord norsk ikke har, falske venner og hva tyske tenåringer faktisk sier.</p></div>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Ord vi mangler</h3>
+      <div class="word"><span class="w">Fernweh</span><span class="small">Lengsel etter å reise langt bort (motsatt av hjemlengsel).</span></div>
+      <div class="word"><span class="w">Ohrwurm</span><span class="small">«Ørorm»: en sang du ikke får ut av hodet.</span></div>
+      <div class="word"><span class="w">Kummerspeck</span><span class="small">«Sorgspekk»: kilo du legger på av trøstespising.</span></div>
+      <div class="word"><span class="w">Fremdschämen</span><span class="small">Å skjemmes på vegne av andre.</span></div>
+      <div class="word"><span class="w">Schnapsidee</span><span class="small">En idé som bare virket smart i øyeblikket.</span></div>
+      <div class="word"><span class="w">Feierabend</span><span class="small">Når arbeidsdagen er over og fritiden begynner.</span></div>
+      <div class="word"><span class="w">Verschlimmbessern</span><span class="small">Å gjøre noe verre ved å prøve å forbedre det.</span></div>
+      <div class="word"><span class="w">Schadenfreude</span><span class="small">Glede over andres uhell. Lånt inn i engelsk.</span></div>
+    </div>
+    <div class="card">
+      <h3>Falske venner</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Tysk</th><th>betyr</th><th>ikke</th></tr></thead>
+        <tbody>
+          <tr><td>bekommen</td><td>få</td><td>bekomme</td></tr>
+          <tr><td>das Gift</td><td>gift (giftig stoff)</td><td>gift (= verheiratet)</td></tr>
+          <tr><td>rar</td><td>sjelden</td><td>rar (= komisch)</td></tr>
+          <tr><td>also</td><td>altså, så</td><td>også (= auch)</td></tr>
+          <tr><td>die Hose</td><td>bukse</td><td>strømpebukse</td></tr>
+          <tr><td>der Rock</td><td>skjørt</td><td>rock (= Jacke)</td></tr>
+          <tr><td>der Bart</td><td>skjegg</td><td>bart (= Schnurrbart)</td></tr>
+          <tr><td>die Rente</td><td>pensjon</td><td>rente (= Zinsen)</td></tr>
+          <tr><td>das Handy</td><td>mobil</td><td>håndig</td></tr>
+          <tr><td>die Note</td><td>karakter (og note)</td><td>notat (= Notiz)</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+    <div class="card">
+      <h3>Ungdomsspråk</h3>
+      <div class="word"><span class="w">Digga</span><span class="small">«Bror», kompis. Brukes hele tiden.</span></div>
+      <div class="word"><span class="w">Alter!</span><span class="small">«Seriøst?!» Overraskelse eller irritasjon.</span></div>
+      <div class="word"><span class="w">Bock haben</span><span class="small">Ha lyst. <i>Kein Bock!</i> = gidder ikke.</span></div>
+      <div class="word"><span class="w">krass</span><span class="small">Heftig, sykt (både bra og dårlig).</span></div>
+      <div class="word"><span class="w">Läuft bei dir</span><span class="small">«Det går bra for deg», ofte ironisk.</span></div>
+      <div class="word"><span class="w">Ehrenmann / Ehrenfrau</span><span class="small">En som gjør noe snilt eller kult.</span></div>
+      <div class="word"><span class="w">chillen</span><span class="small">Slappe av. Lånt fra engelsk, bøyd tysk: <i>wir haben gechillt</i>.</span></div>
+      <p class="small" style="margin-top:12px"><b>Ungdomsordet</b> (Jugendwort des Jahres) kåres av 11–20-åringer: <b>2026: «Ragebait»</b>, 2025: «das crazy», 2024: «Aura».</p>
+    </div>
+  </div>
+</div></section><div class="part"><div class="wrap"><span class="pn">03</span><span class="pt">Lernen</span><span class="pd">Grammatik ohne Panik</span></div></div><section class="sec " id="grammatikk">
+  <div class="wrap"><div class="sechead"><span class="kicker-st">GRAMMATIK</span><h2>Grammatik</h2><p class="lede">Det viktigste først: kasus, artikler, ordstilling og tider. Tabellene er laget for å skrives ut eller tas skjermbilde av.</p></div>
+
+  <div class="grid g2">
+    <div class="card key">
+      <h3>De fire kasusene</h3>
+      <p>Tysk endrer artikkelen etter <b>hvilken rolle</b> ordet har i setningen. Spør deg selv:</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Kasus</th><th>Rolle</th><th>Spørsmål</th></tr></thead>
+        <tbody>
+          <tr><th>Nominativ</th><td>Subjekt (hvem gjør noe)</td><td>Wer? Was?</td></tr>
+          <tr><th>Akkusativ</th><td>Direkte objekt</td><td>Wen? Was?</td></tr>
+          <tr><th>Dativ</th><td>Indirekte objekt (til/for hvem)</td><td>Wem?</td></tr>
+          <tr><th>Genitiv</th><td>Eierforhold</td><td>Wessen?</td></tr>
+        </tbody>
+      </table></div>
+      <div class="ex"><b><span class="der">Der</span> Vater</b> (nom.) gibt <b><span class="der">dem</span> Sohn</b> (dat.) <b><span class="der">einen</span> Ball</b> (akk.).<span class="no">Faren gir sønnen en ball.</span></div>
+    </div>
+
+    <div class="card">
+      <h3>Bestemt artikkel</h3>
+      <div class="tbl"><table>
+        <thead><tr><th></th><th class="der">Mask.</th><th class="die">Fem.</th><th class="das">Nøytr.</th><th>Flertall</th></tr></thead>
+        <tbody>
+          <tr><th>Nom.</th><td>der</td><td>die</td><td>das</td><td>die</td></tr>
+          <tr><th>Akk.</th><td class="hl">den</td><td>die</td><td>das</td><td>die</td></tr>
+          <tr><th>Dat.</th><td>dem</td><td>der</td><td>dem</td><td>den (+n)</td></tr>
+          <tr><th>Gen.</th><td>des (+s)</td><td>der</td><td>des (+s)</td><td>der</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small muted">Gult felt: <b>bare hankjønn endrer seg i akkusativ</b>. I dativ flertall får substantivet ofte en ekstra -n: <i>mit den Kinder<b>n</b></i>.</p>
+    </div>
+
+    <div class="card">
+      <h3>Ubestemt artikkel og <i>kein</i></h3>
+      <div class="tbl"><table>
+        <thead><tr><th></th><th class="der">Mask.</th><th class="die">Fem.</th><th class="das">Nøytr.</th><th>Flertall</th></tr></thead>
+        <tbody>
+          <tr><th>Nom.</th><td>(k)ein</td><td>(k)eine</td><td>(k)ein</td><td>keine</td></tr>
+          <tr><th>Akk.</th><td class="hl">(k)einen</td><td>(k)eine</td><td>(k)ein</td><td>keine</td></tr>
+          <tr><th>Dat.</th><td>(k)einem</td><td>(k)einer</td><td>(k)einem</td><td>keinen</td></tr>
+          <tr><th>Gen.</th><td>(k)eines</td><td>(k)einer</td><td>(k)eines</td><td>keiner</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small muted">Eiendomsordene <b>mein, dein, sein, ihr, unser, euer, ihr, Ihr</b> bøyes nøyaktig som <i>kein</i>: <i>Ich sehe mein<b>en</b> Bruder.</i></p>
+    </div>
+
+    <div class="card">
+      <h3>Personlige pronomen</h3>
+      <div class="tbl"><table>
+        <thead><tr><th>Nom.</th><th>Akk.</th><th>Dat.</th><th>Norsk</th></tr></thead>
+        <tbody>
+          <tr><td>ich</td><td>mich</td><td>mir</td><td>jeg / meg</td></tr>
+          <tr><td>du</td><td>dich</td><td>dir</td><td>du / deg</td></tr>
+          <tr><td>er</td><td>ihn</td><td>ihm</td><td>han / ham</td></tr>
+          <tr><td>sie</td><td>sie</td><td>ihr</td><td>hun / henne</td></tr>
+          <tr><td>es</td><td>es</td><td>ihm</td><td>det</td></tr>
+          <tr><td>wir</td><td>uns</td><td>uns</td><td>vi / oss</td></tr>
+          <tr><td>ihr</td><td>euch</td><td>euch</td><td>dere</td></tr>
+          <tr><td>sie / Sie</td><td>sie / Sie</td><td>ihnen / Ihnen</td><td>de / dem · De (høflig)</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:32px">Kjønn: slik gjetter du riktig</h3>
+  <p>Lær alltid substantivet <b>sammen med artikkelen</b>. Men endelsen avslører ofte kjønnet:</p>
+  <div class="grid g3">
+    <div class="card"><h4 class="der">der</h4><ul class="tight">
+      <li>-er (person/verktøy): <i>der Lehrer, der Computer</i></li>
+      <li>-ling, -ismus, -or: <i>der Frühling, der Motor</i></li>
+      <li>-ig, -ich: <i>der König, der Teppich</i></li>
+      <li>Dager, måneder, årstider: <i>der Montag, der Mai, der Winter</i></li>
+      <li>Vær og himmelretninger: <i>der Regen, der Norden</i></li>
+    </ul></div>
+    <div class="card"><h4 class="die">die</h4><ul class="tight">
+      <li>-ung, -heit, -keit, -schaft: <i>die Zeitung, die Freiheit, die Freundschaft</i></li>
+      <li>-ion, -tät, -ei, -ie, -ik: <i>die Nation, die Universität, die Musik</i></li>
+      <li>De fleste på -e: <i>die Schule, die Lampe</i></li>
+      <li>Alle substantiv i <b>flertall</b>: <i>die Bücher</i></li>
+    </ul></div>
+    <div class="card"><h4 class="das">das</h4><ul class="tight">
+      <li>-chen, -lein (småord): <i>das Mädchen, das Fräulein</i></li>
+      <li>-ment, -um: <i>das Instrument, das Museum</i></li>
+      <li>Verb brukt som substantiv: <i>das Essen, das Schwimmen</i></li>
+      <li>De fleste på Ge-: <i>das Gebäude, das Geschenk</i></li>
+    </ul></div>
+  </div>
+  <p class="small muted" style="margin-top:10px">Sammensatte ord: <b>det siste ordet bestemmer</b>. <i>das Haus + <span class="die">die</span> Tür = <span class="die">die</span> Haustür</i>.</p>
+
+  <div class="card" style="margin-top:16px" id="quizcard">
+    <div class="quiz">
+      <div>
+        <div class="small muted">Kjapp-test: der, die eller das?</div>
+        <div class="qword" id="qword" aria-live="polite">Mädchen</div>
+        <div id="qfb" class="small" aria-live="polite"></div>
+      </div>
+      <div>
+        <div class="qbtns">
+          <button class="b-der" data-a="der">der</button>
+          <button class="b-die" data-a="die">die</button>
+          <button class="b-das" data-a="das">das</button>
+        </div>
+        <div class="small muted" style="margin-top:6px">Poeng: <b id="qscore">0</b> av <b id="qtotal">0</b></div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:36px">Ordstilling</h3>
+  <div class="grid g2">
+    <div class="card key">
+      <h4>V2: verbet står på plass 2</h4>
+      <p>Akkurat som på norsk. Begynner du med noe annet enn subjektet, bytter subjekt og verb plass (inversjon).</p>
+      <div class="ex"><b>Ich spiele</b> heute Fußball.<br><b>Heute spiele ich</b> Fußball.<span class="no">Jeg spiller fotball i dag. / I dag spiller jeg fotball.</span></div>
+    </div>
+    <div class="card key">
+      <h4>Satsklammer: verb nr. 2 havner sist</h4>
+      <p>Med modalverb, perfektum eller futurum går infinitiv/partisipp <b>helt bakerst</b>. Dette er den største forskjellen fra norsk.</p>
+      <div class="ex">Ich <b>kann</b> heute nicht Fußball <b>spielen</b>.<br>Ich <b>habe</b> gestern Fußball <b>gespielt</b>.<span class="no">Jeg kan ikke spille fotball i dag. / Jeg spilte fotball i går.</span></div>
+    </div>
+    <div class="card key">
+      <h4>Leddsetninger: verbet sist</h4>
+      <p>Etter <b>weil, dass, wenn, ob, als, obwohl, damit, bevor, nachdem</b> og spørreord som innleder leddsetning, sendes det bøyde verbet til slutten.</p>
+      <div class="ex">Ich bleibe zu Hause, <b>weil</b> ich krank <b>bin</b>.<br><b>Wenn</b> es regnet, <b>bleibe</b> ich zu Hause.<span class="no">Starter setningen med leddsetningen, kommer hovedsetningens verb rett etter kommaet: verb, verb.</span></div>
+    </div>
+    <div class="card">
+      <h4>TeKaMoLo: rekkefølgen på adverbial</h4>
+      <p><b>Te</b>mporal (når) → <b>Ka</b>usal (hvorfor) → <b>Mo</b>dal (hvordan) → <b>Lo</b>kal (hvor).</p>
+      <div class="ex">Ich fahre <b>morgen</b> <b>wegen der Prüfung</b> <b>mit dem Bus</b> <b>zur Schule</b>.<span class="no">Jeg tar bussen til skolen i morgen på grunn av prøven.</span></div>
+    </div>
+    <div class="card">
+      <h4>Nektelse: <i>nicht</i> eller <i>kein</i>?</h4>
+      <p><b>kein</b> nekter substantiv med ubestemt artikkel eller uten artikkel. <b>nicht</b> nekter alt annet.</p>
+      <div class="ex">Ich habe <b>kein</b> Auto. · Ich habe <b>keine</b> Zeit.<br>Ich komme <b>nicht</b>. · Das ist <b>nicht</b> mein Auto.</div>
+    </div>
+    <div class="card">
+      <h4>Hovedsetning + hovedsetning</h4>
+      <p><b>und, aber, oder, denn, sondern</b> påvirker <i>ikke</i> ordstillingen. De står på «plass 0».</p>
+      <div class="ex">Ich bin müde, <b>aber</b> ich <b>gehe</b> noch ins Kino.<br>Ich bleibe zu Hause, <b>denn</b> ich <b>bin</b> krank.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:36px">Verbbøying i presens</h3>
+  <div class="grid g2">
+    <div class="card">
+      <div class="tbl"><table>
+        <thead><tr><th></th><th>spielen</th><th>sein</th><th>haben</th><th>werden</th></tr></thead>
+        <tbody>
+          <tr><th>ich</th><td>spiel<b>e</b></td><td>bin</td><td>habe</td><td>werde</td></tr>
+          <tr><th>du</th><td>spiel<b>st</b></td><td>bist</td><td>hast</td><td>wirst</td></tr>
+          <tr><th>er/sie/es</th><td>spiel<b>t</b></td><td>ist</td><td>hat</td><td>wird</td></tr>
+          <tr><th>wir</th><td>spiel<b>en</b></td><td>sind</td><td>haben</td><td>werden</td></tr>
+          <tr><th>ihr</th><td>spiel<b>t</b></td><td>seid</td><td>habt</td><td>werdet</td></tr>
+          <tr><th>sie/Sie</th><td>spiel<b>en</b></td><td>sind</td><td>haben</td><td>werden</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small muted">Stammen slutter på -t eller -d? Legg inn en -e-: <i>du arbeit<b>e</b>st, er find<b>e</b>t</i>.</p>
+    </div>
+    <div class="card">
+      <h4>Vokalskifte i du- og er/sie/es-form</h4>
+      <p>Mange sterke verb skifter vokal <b>bare</b> i 2. og 3. person entall:</p>
+      <ul class="tight">
+        <li><b>e → i</b>: sprechen → du spr<mark>i</mark>chst, er spr<mark>i</mark>cht (også: essen, geben, helfen, nehmen)</li>
+        <li><b>e → ie</b>: sehen → du s<mark>ie</mark>hst, er s<mark>ie</mark>ht (også: lesen, empfehlen)</li>
+        <li><b>a → ä</b>: fahren → du f<mark>ä</mark>hrst, er f<mark>ä</mark>hrt (også: schlafen, tragen, fallen)</li>
+        <li><b>au → äu</b>: laufen → du l<mark>äu</mark>fst, er l<mark>äu</mark>ft</li>
+      </ul>
+      <p class="small muted">Sjekk kolonnen «er/sie/es» i verblisten under.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:36px">Fortid: perfektum og preteritum</h3>
+  <div class="grid g2">
+    <div class="card key">
+      <h4>Perfektum = <i>haben/sein</i> + partisipp</h4>
+      <p>Den vanligste fortidsformen i muntlig tysk. Bruk <b class="sein">sein</b> ved:</p>
+      <ul class="tight">
+        <li><b>forflytning</b> fra A til B: gehen, fahren, fliegen, kommen, laufen</li>
+        <li><b>tilstandsendring</b>: aufstehen, einschlafen, sterben, werden</li>
+        <li>og alltid: <b>sein, bleiben, passieren</b></li>
+      </ul>
+      <p>Alt annet tar <b>haben</b>.</p>
+      <div class="ex">Ich <b>bin</b> nach Berlin <b>gefahren</b>. Ich <b>habe</b> viel <b>gesehen</b>.</div>
+    </div>
+    <div class="card">
+      <h4>Slik lager du partisippet</h4>
+      <div class="tbl"><table>
+        <thead><tr><th>Type</th><th>Mønster</th><th>Eksempel</th></tr></thead>
+        <tbody>
+          <tr><td>Svake verb</td><td>ge- … -t</td><td>machen → <b>ge</b>mach<b>t</b></td></tr>
+          <tr><td>Sterke verb</td><td>ge- … -en (ofte ny vokal)</td><td>schreiben → <b>ge</b>schrieb<b>en</b></td></tr>
+          <tr><td>Delbare verb</td><td>ge- i midten</td><td>einkaufen → ein<b>ge</b>kauft</td></tr>
+          <tr><td>Udelbart forstavelse</td><td>ingen ge-</td><td>besuchen → besucht</td></tr>
+          <tr><td>-ieren-verb</td><td>ingen ge-</td><td>telefonieren → telefoniert</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small muted">Udelbare forstavelser: <b>be-, emp-, ent-, er-, ge-, miss-, ver-, zer-</b>.</p>
+    </div>
+    <div class="card">
+      <h4>Preteritum</h4>
+      <p>Brukes mest i skriftlig fortelling. I muntlig tysk bruker man det nesten bare med noen få verb:</p>
+      <div class="ex"><b>sein</b> → ich war · <b>haben</b> → ich hatte · <b>es gibt</b> → es gab<br><b>Modalverb</b>: ich konnte, musste, wollte, durfte, sollte, mochte</div>
+      <p>Svake verb: stamme + <b>-te</b>: ich spiel<b>te</b>, du spiel<b>test</b>, er spiel<b>te</b>, wir spiel<b>ten</b>.</p>
+    </div>
+    <div class="card">
+      <h4>Futurum = <i>werden</i> + infinitiv</h4>
+      <div class="ex">Ich <b>werde</b> nächstes Jahr nach Deutschland <b>fahren</b>.<span class="no">Jeg skal reise til Tyskland neste år.</span></div>
+      <p class="small">Vanlig felle: <b>werden</b> betyr «bli» eller lager futurum. «Jeg vil» heter <b>ich will</b>, og det betyr at du ønsker noe, ikke at noe skal skje.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:36px">Modalverb</h3>
+  <div class="card">
+    <div class="tbl"><table>
+      <thead><tr><th></th><th>können</th><th>müssen</th><th>dürfen</th><th>sollen</th><th>wollen</th><th>mögen</th><th>möchten</th></tr></thead>
+      <tbody>
+        <tr><th>Norsk</th><td>kunne</td><td>måtte</td><td>få lov</td><td>skulle (bør)</td><td>ville</td><td>like</td><td>ønske</td></tr>
+        <tr><th>ich</th><td>kann</td><td>muss</td><td>darf</td><td>soll</td><td>will</td><td>mag</td><td>möchte</td></tr>
+        <tr><th>du</th><td>kannst</td><td>musst</td><td>darfst</td><td>sollst</td><td>willst</td><td>magst</td><td>möchtest</td></tr>
+        <tr><th>er/sie/es</th><td>kann</td><td>muss</td><td>darf</td><td>soll</td><td>will</td><td>mag</td><td>möchte</td></tr>
+        <tr><th>wir</th><td>können</td><td>müssen</td><td>dürfen</td><td>sollen</td><td>wollen</td><td>mögen</td><td>möchten</td></tr>
+        <tr><th>ihr</th><td>könnt</td><td>müsst</td><td>dürft</td><td>sollt</td><td>wollt</td><td>mögt</td><td>möchtet</td></tr>
+        <tr><th>sie/Sie</th><td>können</td><td>müssen</td><td>dürfen</td><td>sollen</td><td>wollen</td><td>mögen</td><td>möchten</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small"><b>Felle:</b> <i>Du musst nicht kommen</i> = du <b>trenger ikke</b> komme. <i>Du darfst nicht kommen</i> = du <b>får ikke lov</b> til å komme.</p>
+  </div>
+
+  <h3 style="margin-top:36px">Adjektivbøying</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4>Etter <i>der, die, das</i> (svak bøying)</h4>
+      <div class="tbl"><table>
+        <thead><tr><th></th><th class="der">Mask.</th><th class="die">Fem.</th><th class="das">Nøytr.</th><th>Flertall</th></tr></thead>
+        <tbody>
+          <tr><th>Nom.</th><td>-e</td><td>-e</td><td>-e</td><td>-en</td></tr>
+          <tr><th>Akk.</th><td>-en</td><td>-e</td><td>-e</td><td>-en</td></tr>
+          <tr><th>Dat.</th><td>-en</td><td>-en</td><td>-en</td><td>-en</td></tr>
+          <tr><th>Gen.</th><td>-en</td><td>-en</td><td>-en</td><td>-en</td></tr>
+        </tbody>
+      </table></div>
+      <div class="ex">der nett<b>e</b> Lehrer · mit dem nett<b>en</b> Lehrer</div>
+    </div>
+    <div class="card">
+      <h4>Etter <i>ein, kein, mein …</i> (blandet bøying)</h4>
+      <div class="tbl"><table>
+        <thead><tr><th></th><th class="der">Mask.</th><th class="die">Fem.</th><th class="das">Nøytr.</th><th>Flertall</th></tr></thead>
+        <tbody>
+          <tr><th>Nom.</th><td class="hl">-er</td><td>-e</td><td class="hl">-es</td><td>-en</td></tr>
+          <tr><th>Akk.</th><td>-en</td><td>-e</td><td class="hl">-es</td><td>-en</td></tr>
+          <tr><th>Dat.</th><td>-en</td><td>-en</td><td>-en</td><td>-en</td></tr>
+          <tr><th>Gen.</th><td>-en</td><td>-en</td><td>-en</td><td>-en</td></tr>
+        </tbody>
+      </table></div>
+      <div class="ex">ein nett<b>er</b> Lehrer · ein klein<b>es</b> Haus · eine gut<b>e</b> Idee</div>
+      <p class="small muted">Huskeregel: Når <i>ein</i> ikke viser kjønnet, tar adjektivet over jobben (-er = der, -es = das).</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:36px">Preposisjoner og kasus</h3>
+  <div class="grid g3">
+    <div class="card"><span class="tag">Akkusativ</span><h4 style="margin-top:6px">durch, für, gegen, ohne, um</h4><div class="ex">Das Geschenk ist <b>für dich</b>.</div></div>
+    <div class="card"><span class="tag">Dativ</span><h4 style="margin-top:6px">aus, bei, mit, nach, seit, von, zu</h4><p class="small">+ gegenüber</p><div class="ex">Ich fahre <b>mit dem</b> Bus <b>zur</b> Schule.</div></div>
+    <div class="card"><span class="tag">Genitiv</span><h4 style="margin-top:6px">wegen, trotz, während, (an)statt</h4><p class="small muted">I muntlig tysk hører du ofte dativ i stedet: <i>wegen dem Wetter</i>.</p><div class="ex"><b>Wegen des</b> Wetters bleiben wir hier.</div></div>
+  </div>
+  <div class="card key" style="margin-top:16px">
+    <span class="tag">Akkusativ eller dativ</span>
+    <h4 style="margin-top:6px">Vekselpreposisjoner: an, auf, hinter, in, neben, über, unter, vor, zwischen</h4>
+    <div class="grid g2" style="margin-top:8px">
+      <div><b>Wohin?</b> (bevegelse mot et mål) → <b>Akkusativ</b><div class="ex">Ich lege das Buch <b>auf den</b> Tisch.<br>Ich gehe <b>ins</b> Kino.</div></div>
+      <div><b>Wo?</b> (befinner seg et sted) → <b>Dativ</b><div class="ex">Das Buch liegt <b>auf dem</b> Tisch.<br>Ich bin <b>im</b> Kino.</div></div>
+    </div>
+    <p class="small muted">Sammentrekninger: in dem = <b>im</b>, in das = <b>ins</b>, an dem = <b>am</b>, an das = <b>ans</b>, zu dem = <b>zum</b>, zu der = <b>zur</b>, von dem = <b>vom</b>, bei dem = <b>beim</b>.</p>
+  </div>
+
+  <h3 style="margin-top:36px">Mer du må kunne</h3>
+  <div class="grid g3">
+    <div class="card">
+      <h4>Verb som tar dativ</h4>
+      <p class="small">helfen, danken, gefallen, gehören, antworten, folgen, gratulieren, passen, schmecken, glauben (+ person)</p>
+      <div class="ex">Ich helfe <b>dir</b>. · Das Buch gehört <b>mir</b>. · Die Pizza schmeckt <b>mir</b>.</div>
+    </div>
+    <div class="card">
+      <h4><i>wenn</i> eller <i>als</i>?</h4>
+      <p class="small"><b>als</b> = én bestemt gang i fortiden. <b>wenn</b> = gjentatte ganger, nåtid, fremtid, eller «hvis».</p>
+      <div class="ex"><b>Als</b> ich zehn war, war ich in Berlin.<br><b>Wenn</b> ich Zeit habe, lese ich.</div>
+    </div>
+    <div class="card">
+      <h4>Delbare verb</h4>
+      <p class="small">Forstavelsen hopper til slutten av setningen i presens og preteritum.</p>
+      <div class="ex">aufstehen → Ich <b>stehe</b> um sieben Uhr <b>auf</b>.<br>anrufen → Ich <b>rufe</b> dich morgen <b>an</b>.</div>
+    </div>
+    <div class="card">
+      <h4>Du eller Sie?</h4>
+      <p class="small"><b>du</b> til venner, familie, barn og ungdom. <b>Sie</b> (stor S) til voksne du ikke kjenner, lærere, butikkansatte. Er du usikker, start med <i>Sie</i>.</p>
+    </div>
+    <div class="card">
+      <h4>Store forbokstaver</h4>
+      <p class="small">Alle substantiv skrives med stor forbokstav: <i>der Hund, die Freiheit, das Essen</i>. Også høflighetsformen <i>Sie, Ihnen, Ihr</i>.</p>
+    </div>
+    <div class="card">
+      <h4>Klokka</h4>
+      <p class="small">Som på norsk: <b>halb drei</b> = halv tre = 14.30. <b>Viertel nach drei</b> = 15.15, <b>Viertel vor drei</b> = 14.45. «Hvor mye er klokka?» = <i>Wie spät ist es?</i></p>
+    </div>
+  </div>
+</div></section><section class="sec band-yellow" id="verb">
+  <div class="wrap"><div class="sechead"><span class="kicker-st">VERBEN</span><h2>Verben</h2><p class="lede">De sterke verbene må pugges. Søk, filtrer, eller slå på øvemodus og test deg selv. <span class="sein">Rød</span> hjelpeverb = perfektum med <i>sein</i>.</p></div>
+
+  <div class="tools">
+    <label for="vq" class="small muted" style="position:absolute;left:-9999px">Søk i verb</label>
+    <input type="search" id="vq" placeholder="Søk på tysk eller norsk, f.eks. «gehen» eller «skrive»">
+    <div class="seg" role="group" aria-label="Verbtype">
+      <button type="button" data-f="alle" aria-pressed="true">Alle</button>
+      <button type="button" data-f="sterk" aria-pressed="false">Sterke</button>
+      <button type="button" data-f="blandet" aria-pressed="false">Blandede</button>
+      <button type="button" data-f="modal" aria-pressed="false">Modal</button>
+      <button type="button" data-f="svak" aria-pressed="false">Svake</button>
+    </div>
+    <button type="button" class="btn primary" id="practice" aria-pressed="false">Øvemodus: skjul former</button>
+    <span class="count" id="vcount"></span>
+  </div>
+  <p class="small muted" id="practicehelp" hidden>Trykk på et skravert felt for å se svaret. Si formen høyt før du trykker.</p>
+  <div class="card" style="padding:6px 8px">
+    <div class="tbl" style="margin:0"><table id="verbs">
+      <thead><tr><th>Infinitiv</th><th>er/sie/es</th><th>Preteritum</th><th>Perfektum</th><th>Norsk</th><th>Type</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </div>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="card"><h4>Sterke verb</h4><p class="small">Skifter vokal i preteritum, partisippet ender på <b>-en</b>: singen – sang – gesungen. Ingen regel; må pugges.</p></div>
+    <div class="card"><h4>Blandede verb</h4><p class="small">Skifter vokal som sterke, men får <b>-te</b> og <b>-t</b> som svake: denken – dachte – gedacht.</p></div>
+    <div class="card"><h4>Svake verb</h4><p class="small">Følger regelen. Preteritum <b>-te</b>, partisipp <b>ge- … -t</b>: machen – machte – gemacht. Kan du én, kan du alle.</p></div>
+  </div>
+</div></section><section class="sec " id="huskeregler">
+  <div class="wrap"><div class="sechead"><span class="kicker-st">ESELSBRÜCKEN</span><h2>Eselsbrücken</h2><p class="lede">På tysk heter huskeregler <i>Eselsbrücken</i>, «eselbroer». Her er de som faktisk hjelper på prøven.</p></div>
+  <div class="grid g3">
+    <div class="card rule"><div class="big">DOGFU</div><h4>Akkusativ-preposisjonene</h4><p><b>D</b>urch, <b>O</b>hne, <b>G</b>egen, <b>F</b>ür, <b>U</b>m. Etter disse kommer alltid akkusativ.</p></div>
+    <div class="card rule"><div class="big">♪ aus-bei-mit</div><h4>Dativ-preposisjonene</h4><p>Syng <b>aus, bei, mit, nach, seit, von, zu</b> på melodien til «An der schönen blauen Donau» (Donauvalsen). Tyske elever lærer den slik.</p></div>
+    <div class="card rule"><div class="big">Wo? Wohin?</div><h4>Vekselpreposisjonene</h4><p><b>an, auf, hinter, neben, in, über, unter, vor</b> und <b>zwischen</b>. Har rytme hvis du sier det fort. Wo = dativ, wohin = akkusativ. Tenk: <b>bevegelse → akkusativ</b>, ro → dativ.</p></div>
+    <div class="card rule"><div class="big">ADUSO</div><h4>Ord som ikke endrer ordstillingen</h4><p><b>A</b>ber, <b>D</b>enn, <b>U</b>nd, <b>S</b>ondern, <b>O</b>der står på plass 0. Etter dem: vanlig V2.</p></div>
+    <div class="card rule"><div class="big">TeKaMoLo</div><h4>Rekkefølge på adverbial</h4><p><b>Te</b>mporal, <b>Ka</b>usal, <b>Mo</b>dal, <b>Lo</b>kal: når, hvorfor, hvordan, hvor.</p></div>
+    <div class="card rule"><div class="big">A → B = sein</div><h4>Perfektum med sein</h4><p>Flytter du deg fra A til B, eller endrer du tilstand? Da er det <b>sein</b>: Ich <i>bin</i> gelaufen. Ich <i>bin</i> eingeschlafen.</p></div>
+    <div class="card rule"><div class="big">Den → hann</div><h4>Akkusativ i et nøtteskall</h4><p><b>Bare hankjønn endrer seg i akkusativ</b>: der → den, ein → einen, kein → keinen, mein → meinen. Hun- og intetkjønn står stille.</p></div>
+    <div class="card rule"><div class="big">-m -r -m -n</div><h4>Dativ-endelsene</h4><p>De<b>m</b>, de<b>r</b>, de<b>m</b>, de<b>n</b> (mask., fem., nøytr., flertall). Same endelser på eine<b>m</b>, eine<b>r</b>, eine<b>m</b>, keine<b>n</b> og mein<b>em</b>, mein<b>er</b> …</p></div>
+    <div class="card rule"><div class="big">Verb sist!</div><h4>Leddsetningsordene</h4><p><b>weil, dass, wenn, ob, als, obwohl</b> sparker verbet til slutten. Tips: hør etter at setningen «henger» til verbet kommer.</p></div>
+    <div class="card rule"><div class="big">ie / ei</div><h4>Uttale</h4><p><b>ie</b> uttales som langt <i>i</i> (Liebe, Bier). <b>ei</b> uttales <i>ai</i> (drei, Wein). <b>eu/äu</b> uttales <i>åi</i> (heute, Häuser). Si det andre bokstaven i <i>ie</i>, ikke den første.</p></div>
+    <div class="card rule"><div class="big">ß = ss</div><h4>Eszett</h4><p><b>ß</b> etter lang vokal eller diftong: <i>Straße, heißen</i>. <b>ss</b> etter kort vokal: <i>Wasser, muss</i>. I Sveits brukes ikke ß i det hele tatt.</p></div>
+    <div class="card rule"><div class="big">Ü Ö Ä</div><h4>Omlyd på tastaturet</h4><p>Mangler du tyske taster? Skriv <b>ue, oe, ae</b>: <i>Muenchen = München</i>. Norsk <b>ø</b> ligner tysk <b>ö</b>, og norsk <b>y</b> ligner <b>ü</b>.</p></div>
+  </div>
+</div></section></main>
+<footer><div class="wrap"><p style="font-family:var(--display);font-size:2rem;line-height:1;margin-bottom:10px">99 LUFTBALLONS</p><p><b>Oleas Deutsch-Universum</b>. Laget for tysk på videregående. Innbyggertall er avrundede omtrentlige verdier. Strømmetilbud endrer seg, så sjekk hvor serier og filmer ligger nå.</p><p>Kartgrunnlag: delstatsgrenser fra <a href="https://github.com/isellsoap/deutschlandGeoJSON">deutschlandGeoJSON</a>.</p></div></footer>
+<script>
+const MAP = {"states":[{"id":"DE-BW","name":"Baden-Württemberg","d":"M183.1,411.9L182.5,418L184.1,418.5L186.1,415.6L187,418.5L189.8,415.6L191.7,417.4L191.5,420.8L193.7,424.2L191.2,427.9L193,428.7L195.6,425.7L194.8,427.6L196.1,427.6L196.5,433L200.2,433L202.4,428.5L203.2,431.1L205.1,431.1L203.9,435.5L207.1,439.1L204.5,440.2L205.3,442.2L204.3,443L206.1,443.8L206.6,447L204.6,448.7L205.7,449L205.2,452.6L211.3,456.6L208.9,459.7L211.1,460.2L211.1,463.8L215.8,464.5L220.6,470.9L219.3,472.9L220.5,474L219.2,477L220.3,479.6L218.5,482.2L222.3,488.1L218.4,489.9L219.7,487.6L218.2,487.3L215.6,490.3L215.1,487.8L212,486.7L211.2,489.5L214.3,493.4L213,493.6L213.8,499.3L209.9,500L210.4,501.3L207.3,503.6L200.9,503.8L201.2,505.9L197.9,509.3L202.3,516.1L203.1,523L205.7,528.6L205.5,534.3L203,538.4L204.2,539.9L204,543.7L202.7,544.5L205.3,548.1L202.3,550.1L204.5,551.9L205,557.8L203,557.8L202.5,560.4L200.3,556.8L197.5,559.3L192,557.6L187.6,562.5L179.3,563.9L176.2,559.4L167.8,557.8L155.4,547.8L161.4,553.6L163.5,558.4L160.9,559.4L153,552.9L153.8,554.1L150.7,554L153.6,556.5L148.4,559.2L146.6,557.3L147.6,555.7L144.6,553.4L142.9,554.9L144.1,557.6L140.9,556.4L141,551.7L139.1,551.9L137.6,549L136.4,551.7L135.9,549.1L133.6,548.4L133.9,550.1L129.2,551.4L126.1,557.6L129.1,560L135.1,557.8L136.3,559.5L134.9,559.8L134.3,563L131.4,560.4L128.5,562.6L130.2,564L127.6,564.9L122.6,564.7L120.8,562.1L116.9,561.2L111.5,565.5L105,566.4L102.5,563.4L99.3,563.4L92.4,567.3L90.7,565.6L92.9,565L92.4,563.5L89.5,564.3L85.7,558.9L87.3,543.9L90.2,537.5L87.8,533.2L88.2,527.4L92.2,520.5L93.5,515L95.8,513.1L95.3,508.3L98.6,500.4L98.6,494.9L106.2,483.5L111.5,480.4L116.6,469.6L121.1,466.3L124.1,459.6L125.3,450.2L130,445.5L128.2,443.2L130.2,441.3L130.4,439L128.8,439.1L130.8,435.6L127.9,435L128.9,433.4L126.7,427.8L127.2,425.4L134.6,429.7L136.2,427.8L135,423.5L139.5,422.5L138.8,425.9L140.9,429.9L148.9,430.7L147.8,433.3L145.4,433.1L146,435.6L144.2,437.2L146.8,438.2L151.3,434.2L151.2,430.6L159.4,430L157.6,428.2L158.3,425.6L165.2,425.4L167.8,420.4L172.5,421.2L172.9,416.5L171.6,415.2L170.1,417L171.1,415.4L167.4,414.6L168.7,414.4L168.2,412.5L176.7,411.2L179.6,414.3L179.6,411.7ZM140,555.1L140.6,556.4L137.8,556.5Z","c":[155.7,497.4],"a":13806},{"id":"DE-BY","name":"Bayern","d":"M205.3,356.6L208.5,356.3L209.9,359.3L214.5,360.6L217.7,365.7L217.2,367.9L220.1,367.3L221.8,370.8L226.9,372.4L227.2,379.9L232.3,381.7L232.8,378.3L238.4,378.2L232,372.9L232.3,370.2L237.2,368.1L242.2,368.1L244.9,371.5L244.9,369.9L247,371.5L250.2,369.9L252.3,372.6L251.5,375.5L256.5,377.1L257.9,369.9L256.3,361.8L259.8,361L260.9,358.6L264.7,359.1L264.1,363.7L265.4,365.8L267.1,365L268.9,369.3L272.1,367.1L281,365.8L282.9,367.9L288,365.4L290.1,367.8L289.9,370.8L296.5,373.6L297.1,375.8L294.7,377.8L299.9,382L299.9,388L302.8,389.4L302.5,391.6L313.2,397L312.6,400.3L315.9,401.2L313.8,407.5L312.5,407.7L312.4,410.9L309.3,413.4L311.1,416.8L315,418.2L314.9,422.1L316.7,422.7L317.7,428.4L320.4,429.3L319.8,432.9L321.1,436.3L325.6,438.5L326.7,441.9L334.5,442.2L338.2,444.9L338.4,447.8L344.9,454.4L344.9,456.5L350.2,458.2L355.1,462.9L356,468.5L359.4,470.7L360,468.8L363.6,468.8L367.4,474.7L371,475.3L374.9,482.5L372.7,486L374.4,491.5L373.7,495L370.5,499.3L359.7,494.6L356.6,496.8L357.4,500.2L355.4,509.8L349.7,514.8L340.8,516.4L330.6,521.7L325.3,527.7L336.7,545.8L332.5,554.1L337.3,554.2L340.4,556.8L341.5,560.3L338.8,564L339.1,570.1L337.2,572.1L335.2,571.3L327.4,565.6L326.6,564.3L328.7,561.9L326.1,559.9L326.7,557.8L318.5,557.6L317.3,560.7L314,561L310.8,556.2L302.7,557.8L302.4,553.5L298.8,556.3L300.4,562.9L291.6,561.5L284.2,564.4L274.1,563.1L271.6,569L265,568.9L262.8,571.7L264.4,573.5L260.6,573.1L257.5,577.2L255.2,577.2L256.3,574.2L243.9,576.8L241.6,571.3L238.7,571.3L241.2,568.7L239.6,567.2L234.5,568.7L226.7,564.8L224.9,567.4L219,564L219,570L220.4,570.7L220.8,574.3L219,578L217,578.2L214,583.2L207,585.4L209.6,577L203.6,579.6L202.3,575.8L203.5,575.3L203.3,572.7L199,570.7L197.8,566.4L193.4,567.7L190.6,566.3L190.1,563.2L187,567L181.6,564.7L183.5,562.1L188.1,562.2L192,557.6L197.5,559.3L200.3,556.8L202.5,560.4L203,557.8L205,557.8L204.5,551.9L202.3,550.1L205.3,548.1L202.7,544.5L204,543.7L204.2,539.9L203,538.4L205.5,534.3L205.7,528.6L203.1,523L202.3,516.1L197.9,509.3L201.2,505.9L200.9,503.8L207.3,503.6L210.4,501.3L209.9,500L213.8,499.3L213,493.6L214.3,493.4L211.2,489.5L212,486.7L215.1,487.8L215.6,490.3L218.2,487.3L219.7,487.6L218.4,489.9L222.3,488.1L218.5,482.2L220.3,479.6L219.2,477L220.5,474L219.3,472.9L220.6,470.9L215.8,464.5L211.1,463.8L211.1,460.2L208.9,459.7L211.3,456.6L205.2,452.6L205.7,449L204.6,448.7L206.6,447L206.1,443.8L204.3,443L205.3,442.2L204.5,440.2L207.1,439.1L203.9,435.5L205.1,431.1L203.2,431.1L202.4,428.5L200.2,433L197.3,433.3L195.7,432.3L195.6,425.7L193,428.7L191.2,427.9L193.7,423.9L190.3,415.6L187.3,418.5L186.1,415.6L183.6,418.5L182.3,417.5L183.4,411.1L179.6,411.7L179.6,414.3L176.7,411.2L170.8,411.8L167.4,414.6L171.1,415.4L169.5,416L170.6,417.3L172.1,415.4L173.2,417.8L172.5,421.2L167.8,420.4L164.1,425.9L159.1,426.1L156.7,424.1L158.5,421.2L157.7,417.8L160.8,414.1L158.7,413.1L160,410.5L158.2,410.8L158.1,407.1L155.5,406.9L154.8,396.7L156.4,396.4L155.5,393L153.1,392.3L154.9,388L159.7,387.1L161.3,387.6L161.1,389.7L164.2,385.4L170.6,386.6L172.5,390.3L177.1,389.4L177.7,384.1L176.4,383.5L176.3,378.7L183.6,379.4L182.5,378.4L183.3,376.8L187.4,373.8L187.5,366.2L193.8,367.5L197.3,365.8L202.6,357.1Z","c":[264.1,468.8],"a":27684},{"id":"DE-BE","name":"Berlin","d":"M344,205.8L346.5,206.7L347.2,203.4L349.1,203.7L349.7,201.2L353.6,203.8L358.4,201.7L357.6,200.8L358.7,199.7L360.9,202.3L360.2,206.2L367,210.9L365,215.3L371.8,217.7L366.9,225.1L366.4,222.3L359,221L358.5,219L356.2,219.8L356.4,222.3L348.2,219L343.1,221.4L340.9,219.2L344.7,212.6L342.2,211.4Z","c":[355.3,213],"a":405},{"id":"DE-BB","name":"Brandenburg","d":"M376.9,136.7L378.6,142.9L393.4,142.3L393.2,146.8L387,155.1L394.3,155.4L397.1,151.2L401.7,150.2L403,155.1L399.3,161.3L400.2,164.7L399.2,169.3L389,178.1L389.6,184.3L388,187.2L398.1,193.4L403.8,201.1L411.7,206.9L410,210.5L411.4,213L406.7,220.7L409.2,227.1L408.6,228.7L414.5,232.4L413.1,241.3L416.4,244.9L413.6,257.4L409.2,262.5L416.3,275.1L416.3,279.7L413.8,280L412.9,283.6L408.6,282L398.1,287.3L389.5,284.1L386.6,287.6L387.4,288.8L384.7,288.8L386.1,291.2L383.1,296.6L381.1,294.8L372.3,297.5L362.3,296.9L355.9,290.8L354.8,292.9L352.1,291.7L349.7,295.8L347.3,294.9L346.8,292.4L345.4,292.7L347,287L346,283.2L339.5,276.5L345.7,271.4L342.9,261.8L344.1,259.9L338.8,260L339.2,257.8L335.8,257.8L335.3,255.3L330.3,255.4L330.1,253L327.3,253.5L322.1,249.8L316,251.8L312.7,247.9L310.8,249.3L300.9,238L304.6,234L302.4,231.7L305.3,224.8L304.2,223.7L305.1,220.4L303.8,219.5L306.3,214.8L301.9,211.4L300.2,213.6L298.8,212.7L299.7,210.8L297.7,211.3L299.5,207.7L299,203.8L302.1,203.6L301.8,199.1L300.2,197.1L300.8,192.6L302.8,191L301.8,186.1L283.8,182.5L282.9,181.1L284.1,179.1L276.8,177L276.5,174.7L274,174.4L274.3,172.2L268.9,171.8L266,169.2L260.9,171.1L257.5,167.4L263.2,166.9L263.2,164.6L269.8,165.8L271.5,162.7L271,159L274.1,156.8L283.2,158.1L281.8,156L292.1,152.2L293.3,147.1L298.7,149.5L301.5,148.1L302.9,150.7L309.1,152.2L311.3,156.3L321.5,155.9L321.8,157.9L325.7,158.3L324.8,160.3L325.9,161.2L335.6,160.2L334.1,162.2L335.8,163.1L342.2,157L345,156.2L347.2,158.8L350.4,154.1L355.2,156.5L356.7,152.5L360.7,150.9L361.8,144.7L365.2,143.9L369.1,138.4L374.6,137.1L372.4,135.9L372.8,132.5L374.1,135.6ZM358.7,199.7L357.6,200.8L358.4,201.7L353.6,203.8L349.7,201.2L349.1,203.7L347.2,203.4L346.5,206.7L342.9,206.6L344,208.1L342.2,211.4L344.7,212.6L341.2,220L343.1,221.4L350.7,219.4L356.4,222.3L356.2,219.8L358.5,219L359,221L366.4,222.3L366.9,225.1L370.6,220.4L371.6,216.8L365,215.3L367,210.9L360.2,206.2L360.9,202.3Z","c":[354.8,214.3],"a":13424},{"id":"DE-HB","name":"Bremen","d":"M152.7,165.3L151,165.7L153,167.6L151.6,168.2L152.6,171.3L150.4,173.9L147.2,171.8L145,173.3L143,170.8L141,172.3L136.2,162.5L129.8,157.6L134.9,158.6L134.7,160.8L145.5,162.4L147,164.7L150.9,163.1Z","c":[144.2,166.7],"a":141},{"id":"DE-HH","name":"Hamburg","d":"M202.4,120L208.3,118.2L205.7,122.2L209.6,126.5L206.2,132.5L214.3,140.9L210.5,144.1L207.3,143.9L201.6,138.8L199,142.3L194.8,142.6L195.4,140L192.8,141.5L188.3,135.5L188.6,131.8L186.5,131.5L188.2,126.1L191.2,129.5L194.9,124.3L202.5,122.2Z","c":[200.3,132.8],"a":375},{"id":"DE-HE","name":"Hessen","d":"M176.2,277.7L182.1,277.2L184.9,281.2L180.4,285.7L182.9,289.4L182.9,293.2L179.5,295.2L179.1,298.5L186.8,302L188.7,298.9L187.1,300.4L185.7,296.9L190.9,293.6L193.2,296.5L192.6,293.6L195.1,293.3L197.9,303.1L201.8,303.7L202.6,307.5L210,310.2L209,315.4L207,312.9L204.9,313.7L207.3,315.4L206,320L209.3,322.1L206.3,324.3L201.1,322.9L200.1,325.3L202.3,327.8L196.8,327.7L196.8,329.3L198.7,328.5L198.2,330.7L199.8,329.6L202,332.3L200.1,333.7L200.2,336.1L196.9,336.9L197.2,339.8L195.5,341.2L196.4,343L193.3,350L196.7,350.8L196.9,347.9L201.4,347.4L203.1,350.6L200.9,352L202,356.1L201,360.7L197.5,365.6L192.2,367.5L188.1,365.6L187.2,374.6L183.3,376.8L182.5,378.4L183.6,379.4L176.3,378.7L176.4,383.5L177.7,384.1L177.1,389.4L172.5,390.3L170.6,386.6L164.2,385.4L161.1,389.7L161.3,387.6L159.7,387.1L154.1,389.4L153.1,392.8L155.5,393L156.4,396.4L154.8,396.7L155.5,406.9L158.1,407.1L158.2,410.8L160,410.5L158.7,413.1L160.8,414.1L157.7,417.8L158.5,421.2L156.7,422.8L158.3,425.6L157.6,428.2L159.4,430L151.2,430.6L151.3,434.2L145,438.2L145.4,433.1L147.8,433.3L148.9,430.7L140.9,429.9L138.8,425.9L139.5,422.5L135,423.5L136.2,427.8L133.1,429.8L125.5,423.2L124.1,418L129.8,412.5L127.2,412.7L125.2,408.8L125.7,406.7L123.5,404.4L123.4,398.9L120.1,394.8L116.1,393.7L102.4,398.1L97.7,392.2L101.6,386.8L104.8,388.7L105,386L102.8,383.9L103.8,381.5L107.8,379.3L109.7,380.8L111,379.5L109.9,376.8L113.9,376.4L111.3,369.2L106.8,366.4L108.9,363.9L107.4,361.3L108,358.3L110.1,356.1L114.9,356.5L115.5,353L113,347.5L115.8,343.2L113.6,339.1L120.2,332.6L125,334.2L129.1,330.4L129,326.6L132.9,323L131.2,321.2L132.2,317L141.2,316.2L140,314.3L143.5,309L142,305L135.1,306L133.8,303.1L139.8,296.6L151.4,295.7L151.9,292.6L150.5,292.7L149.3,288.9L152.9,286.8L158.2,287.5L158.6,291.6L163.8,290.3L170.7,280.6L169.1,279L175.6,275.8Z","c":[155.3,352.2],"a":8840},{"id":"DE-MV","name":"Mecklenburg-Vorpommern","d":"M314.6,60.1L320.8,63.4L334.9,63.8L327.6,66.1L320,64.8L317.2,66.5L318,68L310.8,68.4L307.3,74.1L308.3,76.2L307.5,77.3L311.9,78.6L309.5,76.2L315.3,71.5L316.1,68.3L317.9,70.1L321.5,67.5L320.9,66.1L323.6,66.4L323.1,67.2L324.5,69L326.9,67L327.9,71L337.5,63.7L337.8,67L340.9,69.3L340.1,71L341.5,76L349.7,79.7L352.5,84L351.2,85.6L355.7,84.4L354.1,86.9L355.5,85.8L357.6,91L359.6,91.4L359,88.4L368.5,84.6L373.6,90L370.7,95.8L378.5,104.1L374.4,108.5L379.6,105.2L378.1,98.9L380.8,98.8L380.6,103.2L381.7,101L384.4,102.6L384.6,98.3L381.3,93.1L378.3,93L379,95.3L376.1,98.1L376.9,94.9L375.9,94.3L371.9,96.6L373.8,90.3L370.9,85.6L373.4,84.1L376.5,90.1L383.1,93.8L392.6,103.5L391,104.6L392.4,108.5L384.2,107.9L377.8,110.5L373.6,109.1L384.2,117.1L395.4,118.3L392.3,121.2L395,121.4L395.7,126.5L397.3,127.7L396.3,133.5L399.6,139.9L401.5,149.9L397.1,151.2L394.3,155.4L387,155.1L393.2,146.8L393.4,142.3L378.6,142.9L376.9,136.6L374.1,135.6L372.8,132.5L372.4,135.9L374.6,137.1L369.1,138.4L365.2,143.9L361.8,144.7L360.7,150.9L356.7,152.5L355.2,156.5L350.4,154.1L347.2,158.8L345,156.2L342.2,157L335.8,163.1L334.1,162.2L335.6,160.2L325.9,161.2L324.8,160.3L325.7,158.3L321.8,157.9L321.5,155.9L311.3,156.3L309.1,152.2L302.9,150.7L301.5,148.1L298.7,149.5L293.3,147.1L292.1,152.2L288.7,154.7L286.1,154.1L284.9,156.4L281.8,156L283.2,158.1L279.2,158.9L274.1,156.8L270.4,159.6L271.5,162.7L269.8,165.8L263.2,164.6L262.6,166.9L253.5,164.8L254.1,161.4L248.1,157.5L244.7,149.5L241.3,148.2L237.6,151.5L231.6,146.1L226.5,146.5L228.5,139.5L236.9,135.5L236.9,130.6L241.5,130.2L242.5,123.1L233.9,117.4L233.3,110.5L234.3,107.3L239.3,103.7L240.4,105.7L243.3,105L239.8,104L240.2,101.5L253.2,96.8L256.8,99.2L256.8,103.2L260.3,101.3L265.8,105.8L267.1,100.5L265.3,101.1L265.4,98.3L264.6,101.1L262.8,100.8L262.3,98.3L267.5,96.3L266.4,100.1L267.4,100.5L268.8,95.6L271.2,95.5L273.7,91.1L272.6,90.1L269.4,94.2L269,92.5L276.2,86.1L284.1,86.7L294.8,83.8L295,86.2L296.5,86.3L297.3,84.6L295.2,83.9L306.3,74.8ZM356.3,44.3L353.8,48.2L355.9,52.7L367.8,53.9L367.3,57.2L362.7,61.9L364.6,66.3L367.5,66.7L371.8,71.3L369.5,73.8L369.8,76.7L366.2,74.9L368.9,72.5L364.6,73.3L367.9,70.7L364.7,72.2L363.2,70.4L357.5,71.8L354.7,76.8L352.8,77L355.8,78.1L354.7,80.8L349.9,78.4L351.3,78.9L352,76.3L349,78.2L345.8,76.9L345.5,74.8L343,76L345.1,74.5L341.9,72.1L342.5,69L348.6,68.1L346.3,64.4L343.5,64.4L348.9,60.5L347,60L347.2,58L343.9,58.5L343.2,55.2L348.3,54.7L350.6,57.7L350.2,54.7L353.5,52.6L352.1,55L353.9,54.2L355.5,59.3L359.8,60.4L359.6,55L354.8,53.1L353.6,49.8L347.8,54.2L349.6,47.3L344,54.2L348.1,46.2ZM345.1,59.3L347,61.3L342.2,63.4ZM342.9,50.5L343.9,52.6L341.7,52.2L342,55.9L339.5,62.2L341.1,51.7Z","c":[315.5,117.1],"a":11222},{"id":"DE-NI","name":"Niedersachsen","d":"M138.7,106.5L142.2,110.3L148,111.5L154.1,110.8L157.8,107.1L166.5,108.2L176.6,121.3L178.4,127.2L188.6,131.8L188.3,135.5L192.8,141.5L194.5,139.2L195.7,140.9L194.8,142.6L198.4,142.6L201.6,138.8L207.3,143.9L214.3,141.2L225.7,146.8L231.6,146.1L237.6,151.5L241.8,148.3L244.7,149.5L248.1,157.5L254.1,161.4L253.5,164.8L257.2,165.4L260.1,170.5L266,169.2L272.6,172.7L270.8,175.5L268.6,175.2L268.2,179.7L259.7,184.7L246.9,181.7L244.6,182.2L242.3,186.4L234.3,186.4L235.6,196.3L237.3,196.1L241.4,204.9L244,203.8L242,208L245.4,213.6L242.6,213.5L242.1,216L248.6,222.5L244.4,225.2L249.2,233.5L245.9,235.7L248.1,237.9L247.3,240.4L242.7,242.5L243.8,246.1L230.9,246.4L225,249.6L229.2,253.3L227.2,254.7L229.2,257.5L225.6,261.4L225.6,266.5L228.1,268.4L231.5,276.8L228.5,278.6L229.6,283.1L226.9,281.7L223.1,283.7L216.5,281.1L215.2,285.8L210.1,289.5L208.1,288.7L205.7,291.7L206.6,292.5L201.7,291.9L196.6,296.3L195.1,293.3L192.6,293.6L193.2,296.5L190.9,293.6L185.7,296.9L187.1,300.4L188.7,298.9L186.8,302L179.1,298.5L179.5,295.2L182.9,293.2L182.9,289.4L180.4,285.7L184.9,281.2L182.1,277.2L170.9,276.5L172.1,272.6L171.2,268.3L174,265.8L173.4,262.2L174.7,261.1L169,261.2L169.4,258.2L166.1,255.8L166.2,252.7L161.5,252L162.6,250.6L161.4,247.8L162.2,245L159.6,243.4L160.7,241.2L154.3,240.5L152.7,235.8L155.6,236.9L155.2,233.8L156.8,233.2L151.7,229.4L159,220.3L157.8,217.2L159.7,214.6L157.7,213L155.7,212.8L150.6,220.2L146.7,221.2L140,220.8L139.8,212.7L137.5,210.5L130.8,211.8L127.3,216.7L121.5,215.8L121.9,219.9L127.9,223.1L129.1,226.7L128,234.5L131.4,236.4L126,242.1L119.9,240.3L116.5,244.9L109,245.3L106.3,247.7L102.3,243.9L107.9,241.8L108.3,237.5L103,235.5L105.4,229.7L104.3,227.5L107,227.1L104.7,222.8L94.7,220.3L93.5,216.2L89.8,214.7L88.2,218.1L89.6,218.9L88.6,222.2L75.4,230.6L64.9,232.2L63.1,228.4L65.3,221.8L62,215.2L59.4,217.7L48.6,214.1L47.2,208.7L51.1,208L49.1,206.1L50,201.9L64.1,202.7L66,186.8L73.7,175.3L73.5,167.6L72.1,165.6L75.1,162.7L74.7,159.9L74.2,157.3L71.1,156.9L73.1,149.9L62.9,149.4L61.6,147.5L64,136.2L63.3,134.2L67.8,134.3L65.8,130.9L68.9,126.9L76.2,122.6L86,123.6L108.2,120.5L109.6,125.9L112.6,125.8L115.4,132.6L114.6,135.7L110.5,136.3L110.9,139.5L119.1,144.6L122,139.4L122,135.1L118.1,135.2L120,128.3L131.2,132.5L133,134.8L131.3,136.7L133.7,135.4L129.7,121.8L133.1,111ZM131.3,160.1L136.2,162.5L141,172.3L143,170.8L145,173.3L147.2,171.8L150.4,173.9L152.6,171.3L151.6,168.2L153,167.6L151,165.7L152.7,165.3L150.9,163.1L147,164.7L145.5,162.4L134.7,160.8L134.9,158.6L129.8,157.6ZM130.4,103.4L131.1,104.5L129.9,104.8ZM107.9,114.7L108.6,117.9L106.9,115.9ZM102.7,114.1L106.1,115.6L100.5,114.6ZM94.1,115.2L98.6,115.6L92.3,116.8ZM88,116.9L90.5,117.6L83.1,119.3L83.9,117.1ZM79.8,118.7L81.4,119.4L78.2,119.3ZM76.2,119.5L77.4,119.8L68,121ZM64.4,122.6L66.1,122.9L55,124.4ZM57.2,124.9L57,127.1L55.5,126.1ZM50.8,127.6L53.1,128.9L48.9,130.4L50.2,132.4L44.8,129.3Z","c":[161.2,191.8],"a":22053},{"id":"DE-NW","name":"Nordrhein-Westfalen","d":"M138,211L139.8,212.7L140,220.8L141.4,221.3L150.6,220.2L155.7,212.8L159.4,214.1L157.4,223.7L154.6,224.6L151.7,229.4L156.8,233.2L155.2,233.8L155.6,236.9L152.7,235.8L154.3,240.5L160.7,241.2L159.6,243.4L162.2,245L161.4,247.8L162.6,250.6L161.5,252L166.2,252.7L166.1,255.8L169.4,258.2L169,261.2L174.7,261.1L173.4,262.2L174,265.8L170.9,269.4L172.1,272.6L170.9,276.5L174,276.7L169.1,279L170.7,280.6L163.8,290.3L158.6,291.6L158.5,287.8L155.3,286L149.3,288.9L150.5,292.7L151.9,292.6L151.4,295.7L139.8,296.6L136.5,299.4L133.6,303.9L135.1,306L141.4,304.2L143.5,309L140,314.3L141.2,316.2L132.2,317L131.2,321.2L132.9,323L129,326.6L129.1,330.4L125,334.2L120.2,332.6L113.6,339.1L115.7,342.9L114.5,346.1L109.9,345.8L106.3,340.3L106.3,335.2L99.9,332.6L100.9,329.3L98.3,328.1L95.4,329.9L96.8,335.2L92,337.1L93.2,339.2L92,340.9L79.2,344.6L77.3,350.4L71.7,351.5L71.4,349.7L68.6,353.4L64.3,353.1L58.6,356.4L58.7,358.3L56.6,358.6L57.4,362.9L55.6,364.1L52.7,361.3L50.4,362.5L53,371L48.3,372.4L46.8,370L45.3,371.9L43.7,368.7L36.5,372.1L36.9,370.3L33.8,368.5L34.4,373L31.4,368.8L33,364.1L31,360.6L26.1,360L23.8,356.5L28.6,351.8L23.8,351.4L23.8,348.8L21.3,345.1L17.2,343.9L16.4,340.3L14.2,338.9L17.1,337.4L16.8,335.2L19.3,335.1L19.7,329.7L16.6,328.8L17.3,325.2L11.5,325.6L10,320.3L14.5,321.5L16.6,317.1L23.8,312.8L22.5,311.3L24.7,310L20.1,311.2L19.5,306.1L26.5,297.2L26.6,294.5L25.8,286.1L20,279.6L21.3,275.5L17.7,274.3L18.2,271.4L14.2,269.5L16.1,267.6L14.6,262.9L19,260.4L23.6,261.9L20.8,258.6L23.2,257.4L35,263.3L34.3,259.7L37.9,261.2L47.6,256.3L49.9,257.9L54.3,252.9L54.2,250.7L47.9,247.4L48,244.9L49.9,244.8L51.1,241.4L56,240.8L61.5,233.3L69,230.4L75.4,230.6L88.6,222.2L89.6,218.9L88.2,218.1L89.8,214.7L93.5,216.2L94.7,220.3L104.7,222.8L107,227.1L104.3,227.5L105.4,229.7L103,235.5L108.7,238.3L107.5,238.7L107.9,241.8L102.3,243.9L103.8,246.7L116.5,244.9L119.9,240.3L126,242.1L131.4,236.4L128,234.5L129.1,226.7L127.9,223.1L121.9,219.9L121.2,216.1L127.3,216.7L130.8,211.8Z","c":[87.8,288.4],"a":14925},{"id":"DE-RP","name":"Rheinland-Pfalz","d":"M98.3,328.1L100.9,329.3L99.9,332.6L106.3,335.2L106.3,340.3L109.9,345.8L113.1,345.6L114,352.1L115.5,353.5L114,357.6L110.1,356.1L108,358.3L107.4,361.3L108.9,363.9L106.8,366.4L111.3,369.2L113.9,376.4L109.9,376.8L111,379.5L109.7,380.8L107.8,379.3L103.8,381.5L102.8,383.9L105,386L104.8,388.7L101.6,386.8L97.7,392.2L102.4,398.1L119.3,394.1L123.4,398.9L123.5,404.4L125.7,406.7L125.2,408.8L127.2,412.7L129.8,412.5L124.1,418L127.2,425.4L126.7,427.8L128.9,433.4L127.9,435L130.8,435.6L128.8,439.1L130.4,439L130.2,441.3L128.2,443.2L130,445.5L125.5,449.6L124.1,459.6L118.6,468.7L111.7,467.3L104.6,462.6L101.4,464.2L98.4,462.1L92.4,463.4L86,459.8L84.2,454.8L77.9,454.6L75.1,449.4L79.4,446.1L80.5,440.1L75.2,438.7L73.4,435.7L75.9,433L74.8,430.7L76,428.5L74.7,428.3L74.2,424.9L71.7,426.4L63.2,421.1L43.8,430L33.2,428.1L32.5,426.2L35,423.2L35.3,419.7L39.5,415.6L40.1,409.6L34.4,408.8L32.5,406.4L30.2,407.7L30.1,405.6L26.7,403.7L25.9,399.5L23.4,399.3L20.4,391.7L22.6,383.6L24.6,382.5L23.7,379.1L28.5,377L29.7,373.2L35.2,373L33.3,368.8L36.9,370.3L36.5,372.1L43.7,368.7L45.3,371.9L46.8,370L48.3,372.4L53,371L50.4,362.5L52.7,361.3L55.6,364.1L57.4,362.9L56.6,358.6L58.7,358.3L58.6,356.4L64.3,353.1L68.6,353.4L71.4,349.7L71.7,351.5L77.3,350.4L79.2,344.6L92,340.9L93.2,339.2L92,337.1L96.8,335.2L95.4,329.9Z","c":[82.3,401.6],"a":8120},{"id":"DE-SL","name":"Saarland","d":"M63.4,421.3L71.7,426.4L74.2,424.9L74.7,428.3L76,428.5L74.8,430.7L75.9,433L73.4,435.7L75.2,438.7L80.5,440.1L79.4,446.1L75.1,449.4L78.3,456.4L70.8,458.5L66.2,455.8L64.4,458.7L63.2,453.4L58.2,451L54.4,451.6L55.3,454.1L54.1,456L49.7,455.1L46.5,446.9L41.8,442.1L43.3,440.9L40.4,436.1L35.7,433.3L32.1,433.9L32.9,428.1L43.8,430L58.9,421.6Z","c":[59.8,439.3],"a":1041},{"id":"DE-ST","name":"Sachsen-Anhalt","d":"M274,173.8L276.5,174.7L276.8,177L284.1,179.1L282.9,181.1L283.8,182.5L301.8,186.1L302.8,191L300.8,192.6L300.2,197.1L301.8,199.1L302.1,203.6L299,203.8L299.5,207.7L297.7,211.3L299.7,210.8L298.8,212.7L300.2,213.6L301.9,211.4L306.3,214.8L303.8,219.5L305.1,220.4L304.2,223.7L305.3,224.8L302.4,231.7L304.6,234L300.9,238L303.6,242.8L310.8,249.3L313.3,248.2L316,251.8L322.1,249.8L327.3,253.5L330.1,253L330.3,255.4L335.3,255.3L335.8,257.8L339.2,257.8L338.8,260L344.1,259.9L342.9,261.8L345.7,271.4L338.4,277.3L337.4,275.1L334.6,277.2L329.4,274.1L326.8,276.7L322.7,275.5L320.5,278.8L302.2,282.5L300.2,285.2L300.4,288.4L297.9,290L300.1,293L300,299.8L298.1,300.6L300.7,308.1L299.3,310.5L300.9,310.6L300.4,313.5L302.3,314.3L301.4,315.7L304.4,317.1L302.7,320.8L304.9,321.4L301.5,328L299.7,325.3L291.7,326L289.8,324.1L290.4,322.8L285.5,319.5L280,320.8L275.6,315.7L266.6,316L266.6,310L261.7,307.8L267,302.1L263.5,298.9L263.2,295.9L259.9,293.9L244.6,293.5L245.4,292.6L243.5,292.4L243.8,288.8L242.2,287.5L242.7,284.7L239.7,281.4L242.2,280.3L241.7,278.7L231.5,276.8L228.1,268.4L225.6,266.5L225.6,261.4L229.2,257.5L227.2,254.7L229.2,253.3L226.1,251.9L225.2,249.1L228.1,249.4L230.9,246.4L243.8,246.1L242.7,242.5L247.3,240.4L248.1,237.9L245.9,235.7L249.2,233.5L244.4,225.2L248.6,222.5L242.1,216L242.6,213.5L245.4,213.6L242,208L244,203.8L241.4,204.9L237.3,196.1L235.6,196.3L234.3,186.4L242.3,186.4L244.6,182.2L246.9,181.7L259.7,184.7L268.2,179.7L268.8,174.9L274.8,172.7Z","c":[277.3,248.9],"a":9184},{"id":"DE-SN","name":"Sachsen","d":"M331,274.6L334.6,277.2L337.4,275.1L341.1,279.5L344.4,280.1L344.1,282.8L347,285.6L345.4,292.7L346.8,292.4L347.3,294.9L349.7,295.8L352.1,291.7L354.8,292.9L355.9,290.8L362.3,296.9L372.3,297.5L381.1,294.8L383.1,296.6L386.1,291.2L384.7,288.8L387.4,288.8L386.6,287.6L389.5,284.1L398.1,287.3L408.6,282L412.9,283.6L414.1,280L416.3,285.6L424.1,287.9L426.6,290.8L426.8,298.1L429.6,301.3L430,306.4L425.1,324.6L420,331.8L419.3,336.4L410.5,334.5L412.3,328.9L408.1,329.5L409.7,324.8L405.5,322.8L405.4,320.2L404.9,322.5L400.6,323.4L395.9,320L393.7,325.9L400.8,328.2L399.5,332.1L394.1,332.2L385.1,338.5L380.4,338.2L377.6,339.7L377.8,342.6L375.6,344.4L361.8,344.8L360.7,350.4L357.9,353.2L353.8,349.8L351.6,354.3L348,353.5L345.6,360.1L338.1,359.6L337.9,363.8L335.6,366.4L328.8,363.2L323.1,367.5L319,366L314.4,367.4L313.4,371L307.5,376.3L305.8,383.2L303.8,383L303.8,379.8L301.5,377.9L302.4,376.3L299.7,376.1L299.7,372.9L296.3,373.6L289.7,370.5L290.1,367.8L285.9,364.1L288.9,363.3L289.5,360.9L285.2,356.9L291.6,350.1L292.6,356L298.3,354.4L297.9,350.7L303.7,350.1L306.3,346.6L301.9,342.3L304.7,339.7L302.8,336.8L311.5,335.1L313.4,331.4L321.3,329.3L319.3,323.8L315.5,323.7L316.1,321.9L314.7,322.4L314.5,319.2L312.3,317.5L301.4,315.7L302.3,314.3L300.4,313.5L300.9,310.6L299.3,310.5L300.7,308.1L298.1,300.6L300,299.8L300.1,293L297.9,290L300.4,288.4L299.9,285.7L302.2,282.5Z","c":[352.9,320],"a":7868},{"id":"DE-SH","name":"Schleswig-Holstein","d":"M248.2,56.1L255.7,58.3L259.3,66.6L250.4,66.5L249.3,63.1L245.4,63.5L245.8,59.3ZM126.2,15.6L127.8,17.9L123.7,21.8L124.3,26.9L127.2,28.9L144.7,25.8L163.6,30.6L166.3,34.9L172.1,31.8L173.3,36L181.5,29L181,32.6L189.6,35.3L192,38.6L194.8,38L194.9,35.3L197.1,36.7L200.7,45.2L198.4,42.9L196.3,45.2L196.1,48.8L188.6,52.5L186.4,56.6L187.6,55.2L196.3,49.1L196.8,45.1L200.7,45.4L200.4,54.9L191.8,61.4L193.1,63L205,60L208.3,62.3L206.9,64.1L208,67.5L205.9,69.1L205.2,73.7L207.6,72.4L207.3,69.8L209.6,65.7L213.8,63.9L226.8,69.7L231.4,74.2L235.3,73.7L241.7,68.2L250.8,67.5L247.7,70.3L249.3,82.6L239.4,91.2L236,90.6L233.6,94.3L235.2,98.3L239.4,99.2L239.8,104L243.3,105L240.4,105.7L239.3,103.7L234.3,107.3L233.3,110.5L233.9,117.4L242.5,123.1L241.5,130.2L236.9,130.6L236.9,135.5L228.5,139.5L227.6,145.1L225.7,146.8L213.8,141.2L214.6,139.8L206.9,134.2L206.5,129.9L208.8,129.6L208.2,127.3L209.6,126.5L205.7,122.2L208.3,119.1L207.4,117.6L203,119.1L202.5,122.2L199.3,122L198.7,124.5L194.9,124.3L191.2,129.5L188.2,126.1L186.5,131.5L184.2,131L178.4,127.2L176.6,121.3L166.5,108.2L151.1,105.7L145.1,96.2L151.7,95.3L152.7,93.3L150,87.8L146.9,88.5L144.5,84.4L145.8,78.4L148.9,77.7L151.1,73.6L147,77L146.2,75.5L146.3,77.5L145.2,75.3L137.1,76.7L134.1,73.8L135.2,70L138.9,70.1L135.4,67.8L147.2,66.4L154.4,60.9L152.5,57.2L149.2,61.8L144.5,61.2L144.4,59L147.5,56.6L148.3,51.5L144.8,51.2L146.1,49.8L145.2,47.3L139,40.7L139.3,37.5L134.6,28.3L126.6,31.3L121.7,29.2L122.8,30.1L121.3,31.1L121.2,39.7L120.3,38.9L121.2,26.4ZM185.7,57.3L178.3,58.1L179.6,60.8L181.9,57.9L186.1,59.5L185.4,57.7ZM126.4,15.2L126.6,14.6L128.7,15.5ZM139.2,54.3L138.3,59.3L134.5,57.9ZM132.2,38.6L134.8,41.5L133.5,44.6L125.7,42.6L126.8,39.6ZM132.8,52.6L133.8,54.2L130.8,53ZM129.3,60.7L131.6,64.1L129.1,65L128.1,62.6ZM129.4,55.2L130.6,56.4L129.1,59.2ZM129.7,52.2L130.5,54.3L128.4,54.2ZM123.9,42.1L123.1,43.9L125.6,50L120.9,45.6Z","c":[190.4,83],"a":7659},{"id":"DE-TH","name":"Thüringen","d":"M234.5,276.7L242.2,279.5L239.7,281.4L242.7,284.7L242.2,287.5L243.8,288.8L243.5,292.4L245.4,292.6L244.6,293.5L259.9,293.9L263.2,295.9L263.5,298.9L267,302.1L261.7,307.8L266.6,310L267.5,311.9L265.8,313.5L267.4,316.5L275.6,315.7L280,320.8L285.5,319.5L290.4,322.8L289.8,324.1L291.7,326L299.7,325.3L301.3,328L304.9,322.2L302.7,320.8L304.4,317.1L312.3,317.5L314.5,319.2L314.7,322.4L316.1,321.9L315.5,323.7L319.3,323.8L321.3,329.5L313.4,331.4L311.5,335.1L302.8,336.8L304.7,339.7L301.9,342.3L303.6,342.3L303.5,345.5L305.9,347.7L303.7,350.1L300.4,349.6L300.1,351.5L298.2,350.4L297.5,353.9L298.6,354.2L293.7,356L292.1,355.2L292.2,350.7L290.2,351L287.7,355.8L285.2,356.9L289.5,361.2L288.4,361.4L288.9,363.3L285.9,364.1L287.8,365.2L284.8,367.1L282.6,367.9L280.8,365.8L268.9,369.3L267.1,365L265.4,365.8L264.1,363.7L264.7,359.1L260.9,358.6L259.8,361L256.3,361.8L257.9,369.9L256.5,377.1L251.5,375.5L252.3,372.6L250.2,369.9L247,371.5L244.9,369.9L244.9,371.5L242.2,368.1L239.4,367.8L232,370.8L232.6,373.4L238.1,376.6L238.1,378.8L232.8,378.3L232.6,381.7L227.5,380.2L226.9,372.4L221.8,370.8L220.1,367.3L217.2,367.9L217.7,365.7L214.5,360.6L205,355.5L201,359L202,356.1L200.9,352L203.1,351.4L201.4,347.4L196.9,347.9L196.7,350.8L193.3,350L196.4,343L195.5,341.2L197.2,339.8L196.9,336.9L200.2,336.1L200.1,333.7L202,332.3L199.8,329.6L198.2,330.7L198.7,328.5L196.8,329.3L196.8,327.7L202.3,327.8L200.1,325.3L201.1,322.9L208.5,323.8L208.5,320.8L206,320L207.3,315.4L204.9,313.7L207,312.9L209,315.4L210,310.8L202.6,307.5L201.8,303.7L197.9,303.1L195.7,296.8L201.7,291.9L206.6,292.5L205.7,291.7L208.1,288.7L213,287.9L216,284.7L216.5,281.1L229.4,283.4L228.5,278.6Z","c":[246.5,330.7],"a":6929}],"cities":{"Berlin":[355.2,211.4],"Hamburg":[198.8,132.9],"München":[271.6,526.5],"Köln":[59.9,328.5],"Frankfurt":[138.8,388.2],"Stuttgart":[161.7,482.2],"Düsseldorf":[51.3,307.4],"Leipzig":[307.9,299.1],"Dresden":[370.4,320.3],"Bremen":[144.2,169.1],"Hannover":[186.9,222.3],"Nürnberg":[248.5,434.9],"Kiel":[204.8,72.8],"Rostock":[295.3,90.9]}};
+
+/* ---------- VERB DATA ---------- */
+// [infinitiv, er/sie/es, preteritum, hjelpeverb, partisipp, norsk, type]
+const V = [
+["anfangen","fängt an","fing an","hat","angefangen","begynne","sterk"],
+["aufstehen","steht auf","stand auf","ist","aufgestanden","stå opp","sterk"],
+["beginnen","beginnt","begann","hat","begonnen","begynne","sterk"],
+["bieten","bietet","bot","hat","geboten","by, tilby","sterk"],
+["bitten","bittet","bat","hat","gebeten","be (om)","sterk"],
+["bleiben","bleibt","blieb","ist","geblieben","bli (værende)","sterk"],
+["brechen","bricht","brach","hat","gebrochen","brekke","sterk"],
+["einladen","lädt ein","lud ein","hat","eingeladen","invitere","sterk"],
+["empfehlen","empfiehlt","empfahl","hat","empfohlen","anbefale","sterk"],
+["essen","isst","aß","hat","gegessen","spise","sterk"],
+["fahren","fährt","fuhr","ist","gefahren","kjøre, reise","sterk"],
+["fallen","fällt","fiel","ist","gefallen","falle","sterk"],
+["fangen","fängt","fing","hat","gefangen","fange","sterk"],
+["fernsehen","sieht fern","sah fern","hat","ferngesehen","se på TV","sterk"],
+["finden","findet","fand","hat","gefunden","finne","sterk"],
+["fliegen","fliegt","flog","ist","geflogen","fly","sterk"],
+["geben","gibt","gab","hat","gegeben","gi","sterk"],
+["gefallen","gefällt","gefiel","hat","gefallen","like, behage","sterk"],
+["gehen","geht","ging","ist","gegangen","gå","sterk"],
+["gewinnen","gewinnt","gewann","hat","gewonnen","vinne","sterk"],
+["halten","hält","hielt","hat","gehalten","holde, stoppe","sterk"],
+["heißen","heißt","hieß","hat","geheißen","hete","sterk"],
+["helfen","hilft","half","hat","geholfen","hjelpe","sterk"],
+["kommen","kommt","kam","ist","gekommen","komme","sterk"],
+["lassen","lässt","ließ","hat","gelassen","la","sterk"],
+["laufen","läuft","lief","ist","gelaufen","løpe, gå","sterk"],
+["lesen","liest","las","hat","gelesen","lese","sterk"],
+["liegen","liegt","lag","hat","gelegen","ligge","sterk"],
+["lügen","lügt","log","hat","gelogen","lyve","sterk"],
+["nehmen","nimmt","nahm","hat","genommen","ta","sterk"],
+["rufen","ruft","rief","hat","gerufen","rope","sterk"],
+["scheinen","scheint","schien","hat","geschienen","skinne, synes","sterk"],
+["schlafen","schläft","schlief","hat","geschlafen","sove","sterk"],
+["schlagen","schlägt","schlug","hat","geschlagen","slå","sterk"],
+["schließen","schließt","schloss","hat","geschlossen","lukke","sterk"],
+["schreiben","schreibt","schrieb","hat","geschrieben","skrive","sterk"],
+["schreien","schreit","schrie","hat","geschrien","skrike","sterk"],
+["schwimmen","schwimmt","schwamm","ist","geschwommen","svømme","sterk"],
+["sehen","sieht","sah","hat","gesehen","se","sterk"],
+["sein","ist","war","ist","gewesen","være","sterk"],
+["singen","singt","sang","hat","gesungen","synge","sterk"],
+["sitzen","sitzt","saß","hat","gesessen","sitte","sterk"],
+["sprechen","spricht","sprach","hat","gesprochen","snakke","sterk"],
+["springen","springt","sprang","ist","gesprungen","hoppe","sterk"],
+["stehen","steht","stand","hat","gestanden","stå","sterk"],
+["stehlen","stiehlt","stahl","hat","gestohlen","stjele","sterk"],
+["steigen","steigt","stieg","ist","gestiegen","stige","sterk"],
+["sterben","stirbt","starb","ist","gestorben","dø","sterk"],
+["tragen","trägt","trug","hat","getragen","bære, ha på seg","sterk"],
+["treffen","trifft","traf","hat","getroffen","møte, treffe","sterk"],
+["trinken","trinkt","trank","hat","getrunken","drikke","sterk"],
+["tun","tut","tat","hat","getan","gjøre","sterk"],
+["vergessen","vergisst","vergaß","hat","vergessen","glemme","sterk"],
+["verlieren","verliert","verlor","hat","verloren","miste, tape","sterk"],
+["verstehen","versteht","verstand","hat","verstanden","forstå","sterk"],
+["waschen","wäscht","wusch","hat","gewaschen","vaske","sterk"],
+["werden","wird","wurde","ist","geworden","bli","sterk"],
+["werfen","wirft","warf","hat","geworfen","kaste","sterk"],
+["ziehen","zieht","zog","hat","gezogen","trekke, flytte","sterk"],
+["bringen","bringt","brachte","hat","gebracht","bringe","blandet"],
+["denken","denkt","dachte","hat","gedacht","tenke","blandet"],
+["haben","hat","hatte","hat","gehabt","ha","blandet"],
+["kennen","kennt","kannte","hat","gekannt","kjenne","blandet"],
+["nennen","nennt","nannte","hat","genannt","kalle, nevne","blandet"],
+["rennen","rennt","rannte","ist","gerannt","springe, løpe","blandet"],
+["wissen","weiß","wusste","hat","gewusst","vite","blandet"],
+["dürfen","darf","durfte","hat","gedurft","få lov til","modal"],
+["können","kann","konnte","hat","gekonnt","kunne","modal"],
+["mögen","mag","mochte","hat","gemocht","like","modal"],
+["müssen","muss","musste","hat","gemusst","måtte","modal"],
+["sollen","soll","sollte","hat","gesollt","skulle, burde","modal"],
+["wollen","will","wollte","hat","gewollt","ville","modal"],
+["antworten","antwortet","antwortete","hat","geantwortet","svare","svak"],
+["arbeiten","arbeitet","arbeitete","hat","gearbeitet","arbeide","svak"],
+["aufräumen","räumt auf","räumte auf","hat","aufgeräumt","rydde","svak"],
+["besuchen","besucht","besuchte","hat","besucht","besøke","svak"],
+["bezahlen","bezahlt","bezahlte","hat","bezahlt","betale","svak"],
+["brauchen","braucht","brauchte","hat","gebraucht","trenge","svak"],
+["einkaufen","kauft ein","kaufte ein","hat","eingekauft","handle","svak"],
+["erzählen","erzählt","erzählte","hat","erzählt","fortelle","svak"],
+["fragen","fragt","fragte","hat","gefragt","spørre","svak"],
+["glauben","glaubt","glaubte","hat","geglaubt","tro","svak"],
+["hören","hört","hörte","hat","gehört","høre","svak"],
+["kaufen","kauft","kaufte","hat","gekauft","kjøpe","svak"],
+["kochen","kocht","kochte","hat","gekocht","lage mat, koke","svak"],
+["lachen","lacht","lachte","hat","gelacht","le","svak"],
+["leben","lebt","lebte","hat","gelebt","leve","svak"],
+["lernen","lernt","lernte","hat","gelernt","lære","svak"],
+["lieben","liebt","liebte","hat","geliebt","elske","svak"],
+["machen","macht","machte","hat","gemacht","gjøre, lage","svak"],
+["passieren","passiert","passierte","ist","passiert","skje","svak"],
+["reisen","reist","reiste","ist","gereist","reise","svak"],
+["sagen","sagt","sagte","hat","gesagt","si","svak"],
+["spielen","spielt","spielte","hat","gespielt","spille, leke","svak"],
+["studieren","studiert","studierte","hat","studiert","studere","svak"],
+["suchen","sucht","suchte","hat","gesucht","lete","svak"],
+["tanzen","tanzt","tanzte","hat","getanzt","danse","svak"],
+["telefonieren","telefoniert","telefonierte","hat","telefoniert","snakke i telefonen","svak"],
+["wandern","wandert","wanderte","ist","gewandert","gå tur","svak"],
+["warten","wartet","wartete","hat","gewartet","vente","svak"],
+["wohnen","wohnt","wohnte","hat","gewohnt","bo","svak"],
+["zeigen","zeigt","zeigte","hat","gezeigt","vise","svak"]
+];
+const TL={sterk:"sterk",blandet:"blandet",modal:"modal",svak:"svak"};
+let vf="alle", practice=false;
+const tbody=document.querySelector("#verbs tbody");
+function renderVerbs(){
+  const q=document.getElementById("vq").value.trim().toLowerCase();
+  const rows=V.filter(v=>(vf==="alle"||v[6]===vf)&&(!q||v[0].includes(q)||v[5].toLowerCase().includes(q)||v[2].toLowerCase().includes(q)||v[4].includes(q)));
+  tbody.innerHTML=rows.map(v=>{
+    const aux=v[3]==="ist"?`<span class="sein">ist</span>`:"hat";
+    const h=practice?' class="hide" tabindex="0"':'';
+    return `<tr><td>${v[0]}</td><td${h}>${v[1]}</td><td${h}>${v[2]}</td><td${h}>${aux} ${v[4]}</td><td>${v[5]}</td><td class="vt">${TL[v[6]]}</td></tr>`;
+  }).join("");
+  document.getElementById("vcount").textContent=rows.length+" verb";
+}
+document.getElementById("vq").addEventListener("input",renderVerbs);
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{
+  vf=b.dataset.f;document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderVerbs();
+}));
+const pbtn=document.getElementById("practice");
+pbtn.addEventListener("click",()=>{
+  practice=!practice;pbtn.setAttribute("aria-pressed",practice);
+  pbtn.textContent=practice?"Vis alle former":"Øvemodus: skjul former";
+  document.getElementById("verbs").classList.toggle("practice",practice);
+  document.getElementById("practicehelp").hidden=!practice;renderVerbs();
+});
+function reveal(e){const td=e.target.closest("td.hide");if(td)td.classList.toggle("shown")}
+tbody.addEventListener("click",reveal);
+tbody.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();reveal(e)}});
+renderVerbs();
+
+/* ---------- ARTIKKEL-QUIZ ---------- */
+const Q=[["Mädchen","das","-chen er alltid das."],["Zeitung","die","-ung er alltid die."],["Montag","der","Ukedager er der."],["Freundschaft","die","-schaft er die."],["Museum","das","-um er das."],["Lehrer","der","-er om personer er der."],["Musik","die","-ik er die."],["Schwimmen","das","Verb som substantiv er das."],["Frühling","der","-ling er der."],["Universität","die","-tät er die."],["Haustür","die","Siste ord bestemmer: die Tür."],["Geschenk","das","De fleste Ge-ord er das."],["Winter","der","Årstider er der."],["Freiheit","die","-heit er die."],["Instrument","das","-ment er das."],["Optimismus","der","-ismus er der."],["Information","die","-ion er die."],["Schule","die","De fleste på -e er die."],["Regen","der","Vær er der."],["Brötchen","das","-chen er alltid das."],["Handy","das","Bare et pugge-ord: das Handy."],["Fußball","der","Siste ord bestemmer: der Ball."]];
+let qi=0,qs=0,qt=0,order=[...Q.keys()].sort(()=>Math.random()-.5),lock=false;
+const qw=document.getElementById("qword"),qfb=document.getElementById("qfb");
+function showQ(){qw.textContent=Q[order[qi%Q.length]][0];qw.className="qword"}
+document.querySelectorAll(".qbtns button").forEach(b=>b.addEventListener("click",()=>{
+  if(lock)return;lock=true;const [w,a,why]=Q[order[qi%Q.length]];qt++;
+  if(b.dataset.a===a){qs++;qfb.innerHTML=`<span class="${a}">Riktig: ${a} ${w}.</span> ${why}`}
+  else{qfb.innerHTML=`<span style="color:var(--rot)">Nei, det heter <span class="${a}">${a} ${w}</span>.</span> ${why}`}
+  qw.className="qword "+a;qw.textContent=a+" "+w;
+  document.getElementById("qscore").textContent=qs;document.getElementById("qtotal").textContent=qt;
+  setTimeout(()=>{qi++;showQ();lock=false},1400);
+}));
+showQ();
+
+/* ---------- MAP ---------- */
+const INFO={
+"DE-BW":{n:"Baden-Württemberg",c:"Stuttgart",p:"11,2 mill.",t:"Bilens hjemland: Mercedes-Benz og Porsche har hovedkontor i Stuttgart. Schwarzwald (gjøkur og kirsebærkake) og Bodensjøen. Dialekten heter Schwäbisch.",cities:["Stuttgart"]},
+"DE-BY":{n:"Bayern",c:"München",p:"13,3 mill.",t:"Største delstat i areal. Oktoberfest, slottet Neuschwanstein, FC Bayern og Alpene med Zugspitze, Tysklands høyeste fjell (2962 m). Mange bayere ser på seg selv som bayere først, tyskere etterpå.",cities:["München","Nürnberg"]},
+"DE-BE":{n:"Berlin",c:"Berlin",p:"3,8 mill.",t:"Hovedstaden og en egen delstat. Var delt av Muren fra 1961 til 1989. I dag kjent for kunst, klubbliv, døner og at alle er «fra et annet sted».",cities:["Berlin"]},
+"DE-BB":{n:"Brandenburg",c:"Potsdam",p:"2,6 mill.",t:"Ligger rundt Berlin som en ring. Slottet Sanssouci i Potsdam, tusenvis av innsjøer og Spreewald der posten kan leveres med båt.",cities:[]},
+"DE-HB":{n:"Bremen",c:"Bremen",p:"0,7 mill.",t:"Den minste delstaten, og den består av to byer: Bremen og havnebyen Bremerhaven. Kjent fra eventyret om Bremer-musikantene (esel, hund, katt og hane).",cities:["Bremen"]},
+"DE-HH":{n:"Hamburg",c:"Hamburg",p:"1,9 mill.",t:"Bystat og Tysklands største havn. Elbphilharmonie, Reeperbahn og Miniatur Wunderland. Hamburgere hilser med «Moin!» hele dagen.",cities:["Hamburg"]},
+"DE-HE":{n:"Hessen",c:"Wiesbaden",p:"6,3 mill.",t:"Frankfurt er Tysklands finanssentrum, med børs, sentralbank og landets største flyplass. Brødrene Grimm, som samlet eventyrene, kom herfra.",cities:["Frankfurt"]},
+"DE-MV":{n:"Mecklenburg-Vorpommern",c:"Schwerin",p:"1,6 mill.",t:"Østersjøkyst, strandbyer og Rügen, Tysklands største øy, med hvite krittklipper. Den tynnest befolkede delstaten.",cities:[]},
+"DE-NI":{n:"Niedersachsen",c:"Hannover",p:"8,1 mill.",t:"Nest størst i areal. Volkswagen har hovedkontor i Wolfsburg. Lüneburger Heide og Østfrisiske øyer i Vadehavet, som står på UNESCOs verdensarvliste.",cities:["Hannover"]},
+"DE-NW":{n:"Nordrhein-Westfalen",c:"Düsseldorf",p:"18,1 mill.",t:"Flest innbyggere. Ruhrgebiet var tidligere kull- og stålindustriens hjerte. Köln-domen, karneval og fotballrivaler: Dortmund, Schalke, Köln, Gladbach og Leverkusen.",cities:["Köln","Düsseldorf"]},
+"DE-RP":{n:"Rheinland-Pfalz",c:"Mainz",p:"4,2 mill.",t:"Vinbakker langs Rhinen og Mosel, borger og klippen Loreley. Johannes Gutenberg fant opp boktrykkerkunsten i Mainz rundt 1450.",cities:[]},
+"DE-SL":{n:"Saarland",c:"Saarbrücken",p:"1,0 mill.",t:"Den minste delstaten som ikke er en by. Grenser til Frankrike og Luxembourg, og fransk påvirkning merkes i mat og språk. Kjent for elveslyngen Saarschleife.",cities:[]},
+"DE-SN":{n:"Sachsen",c:"Dresden",p:"4,1 mill.",t:"Dresden med Frauenkirche og Leipzig med musikkhistorie (Bach) og Montagsdemonstrationen i 1989. Erzgebirge lager trefigurer og nøtteknekkere til jul.",cities:["Dresden","Leipzig"]},
+"DE-ST":{n:"Sachsen-Anhalt",c:"Magdeburg",p:"2,1 mill.",t:"Martin Luther startet reformasjonen i Wittenberg i 1517. Bauhaus-skolen for design lå i Dessau. Harz-fjellet med Brocken, der heksene ifølge sagnet danser på valborgsnatten.",cities:[]},
+"DE-SH":{n:"Schleswig-Holstein",c:"Kiel",p:"3,0 mill.",t:"Mellom Nordsjøen og Østersjøen, og nærmest Norge: Color Line går mellom Kiel og Oslo. Marsipan fra Lübeck, øya Sylt og seilfesten Kieler Woche.",cities:["Kiel"]},
+"DE-TH":{n:"Thüringen",c:"Erfurt",p:"2,1 mill.",t:"Tysklands «grønne hjerte». Goethe og Schiller bodde i Weimar. På borgen Wartburg oversatte Luther Det nye testamentet. Og Thüringer Rostbratwurst!",cities:[]}
+};
+const CITYLBL={Berlin:[8,4,"start"],Hamburg:[8,4,"start"],"München":[8,4,"start"],"Köln":[7,10,"start"],Frankfurt:[8,4,"start"],Stuttgart:[8,4,"start"],"Düsseldorf":[7,-3,"start"],Leipzig:[-8,4,"end"],Dresden:[8,4,"start"],Bremen:[-8,4,"end"],Hannover:[8,4,"start"],"Nürnberg":[8,4,"start"],Kiel:[8,4,"start"]};
+const CAPS=new Set(["Berlin","Hamburg","München","Stuttgart","Düsseldorf","Dresden","Bremen","Hannover","Kiel"]);
+const svg=document.getElementById("map"),NS="http://www.w3.org/2000/svg";
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e}
+const gS=el("g",{}),gL=el("g",{}),gC=el("g",{});
+const sea1=el("text",{x:40,y:70,class:"sea"});sea1.textContent="NORDSEE";
+const sea2=el("text",{x:300,y:28,class:"sea"});sea2.textContent="OSTSEE";
+const nor=el("text",{x:150,y:18,class:"sea"});nor.textContent="↑ Oslo";
+svg.append(gS,gL,gC,sea1,sea2,nor);
+MAP.states.forEach(s=>{
+  const p=el("path",{d:s.d,class:"st","data-id":s.id,tabindex:0,role:"button","aria-label":INFO[s.id].n});
+  p.addEventListener("click",()=>select(s.id));
+  p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(s.id)}});
+  gS.append(p);
+  if(!["DE-BE","DE-HB","DE-HH"].includes(s.id)){const t=el("text",{x:s.c[0],y:s.c[1]+(s.id==="DE-BB"?24:0),class:"abbr"});t.textContent=s.id.slice(3);gL.append(t)}
+});
+for(const [name,[x,y]] of Object.entries(MAP.cities)){
+  if(!CITYLBL[name])continue;
+  const g=el("g",{class:"city"});const [dx,dy,an]=CITYLBL[name];
+  g.append(el("circle",{cx:x,cy:y,r:CAPS.has(name)?4:3.5,class:CAPS.has(name)?"cap":""}));
+  const t=el("text",{x:x+dx,y:y+dy,"text-anchor":an});t.textContent=name;g.append(t);gC.append(g);
+}
+const info=document.getElementById("stinfo");
+function select(id){
+  gS.querySelectorAll("path").forEach(p=>p.classList.toggle("sel",p.dataset.id===id));
+  const d=INFO[id];
+  info.innerHTML=`<div class="small muted">Bundesland</div><h3>${d.n}</h3>
+  <div class="facts"><div class="fact"><div class="k">Hovedstad</div><div class="v">${d.c}</div></div><div class="fact"><div class="k">Innbyggere</div><div class="v">ca. ${d.p}</div></div><div class="fact"><div class="k">Forkortelse</div><div class="v">${id.slice(3)}</div></div></div>
+  <p>${d.t}</p>
+  <div class="small muted" style="margin-top:12px">Alle delstater:</div>
+  <div class="chips">${Object.keys(INFO).sort((a,b)=>INFO[a].n.localeCompare(INFO[b].n,"de")).map(k=>`<button type="button" data-id="${k}" class="${k===id?"on":""}">${INFO[k].n}</button>`).join("")}</div>`;
+  info.querySelectorAll(".chips button").forEach(b=>b.addEventListener("click",()=>select(b.dataset.id)));
+}
+select("DE-BE");
+
+/* ---------- NAV HIGHLIGHT ---------- */
+const links=[...document.querySelectorAll("nav.top a.l")];
+const secs=links.map(a=>document.querySelector(a.getAttribute("href")));
+function onScroll(){let cur=0;secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<120)cur=i});links.forEach((a,i)=>a.classList.toggle("on",i===cur))}
+addEventListener("scroll",onScroll,{passive:true});onScroll();
+
+/* ---------- 99 BALLOONS ---------- */
+(function(){
+  const cv=document.getElementById("balloons"),cx=cv.getContext("2d"),host=cv.parentElement;
+  const still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W=0,H=0,dpr=1;const B=[];
+  function rnd(a,b){return a+Math.random()*(b-a)}
+  function size(){dpr=Math.min(devicePixelRatio||1,2);W=host.clientWidth;H=host.clientHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
+  size();
+  for(let i=0;i<99;i++)B.push({x:rnd(0,1),y:rnd(0,1.1),r:rnd(9,26),v:rnd(.00012,.00035),ph:rnd(0,6.28),c:Math.random()<.18?"rgba(17,17,17,.20)":(Math.random()<.5?"rgba(255,255,255,.16)":"rgba(170,0,15,.32)")});
+  B.sort((a,b)=>a.r-b.r);
+  function draw(t){
+    cx.clearRect(0,0,W,H);
+    for(const b of B){
+      const x=b.x*W+Math.sin(t/1600+b.ph)*8,y=b.y*H;
+      cx.strokeStyle="rgba(17,17,17,.22)";cx.lineWidth=1;cx.beginPath();cx.moveTo(x,y+b.r*1.15);
+      cx.quadraticCurveTo(x+Math.sin(t/900+b.ph)*6,y+b.r*2.2,x,y+b.r*3.2);cx.stroke();
+      cx.fillStyle=b.c;cx.beginPath();cx.ellipse(x,y,b.r*.86,b.r,0,0,6.283);cx.fill();
+      cx.fillStyle="rgba(255,255,255,.22)";cx.beginPath();cx.ellipse(x-b.r*.3,y-b.r*.35,b.r*.18,b.r*.28,-.5,0,6.283);cx.fill();
+    }
+  }
+  function loop(t){for(const b of B){b.y-=b.v*16;if(b.y<-.12){b.y=1.12;b.x=rnd(0,1)}}draw(t);requestAnimationFrame(loop)}
+  addEventListener("resize",()=>{size();draw(0)});
+  if(still)draw(0);else requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
